@@ -12,7 +12,7 @@ export function containerClass(width?: string[] | string | null): "container" | 
 export function imageAlign(align?: string[] | string | null): "left" | "right" {
   const val = first(align);
 
-//   console.log({ align, val });
+  console.log({ align, val });
   return val === "Right" || val?.toLowerCase() === "right" ? "right" : "left";
 }
 
