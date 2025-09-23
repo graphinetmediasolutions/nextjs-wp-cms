@@ -38,9 +38,9 @@ import CmsRenderer from "@/cms/CmsRenderer";
 
 export default function PageTemplate({ page }: any) {
 
-   console.log("Page ",page?.pageBuilder?.pageLayout);
+  //  console.log("Page ",page?.pageBuilder?.pageLayout);
   const sections = page?.pageBuilder?.pageLayout ?? [];
-  console.log("Page in template",sections);
+  // console.log("Page in template",sections);
   if (sections.length > 0) {
     return <CmsRenderer sections={sections as any[]} />;
   }

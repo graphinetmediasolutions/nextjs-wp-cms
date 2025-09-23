@@ -46,7 +46,9 @@ export default function TextBlock({ data }: Props) {
 
   const alignClass = alignItems(alignItem);
   const imgSide = imageAlign(textblockImageAlign); // "left" | "right"
-  const flipOnDesktop = hasImage && imgSide === "right";
+
+  console.log(imgSide);
+  const flipOnDesktop = hasImage && imgSide === "left";
 
 
 

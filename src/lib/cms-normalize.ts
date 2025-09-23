@@ -11,6 +11,8 @@ export function containerClass(width?: string[] | string | null): "container" | 
 // Map ["Left"|"Right"] to "left" | "right"
 export function imageAlign(align?: string[] | string | null): "left" | "right" {
   const val = first(align);
+
+//   console.log({ align, val });
   return val === "Right" || val?.toLowerCase() === "right" ? "right" : "left";
 }
 
@@ -23,4 +25,12 @@ export function alignItems(align?: string[] | string | null): string {
     case "Top":
     default: return "items-start";
   }
+}
+
+
+
+
+export function getLayout(v?: string | null): "grid" | "carousel" {
+  if (v === "Carousel") return "carousel";
+  return "grid"; // default
 }
