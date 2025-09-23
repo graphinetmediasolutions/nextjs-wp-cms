@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+   /* Container padding (Bootstrap-like) */
+  --bs-gutter-x: 1.5rem;                 /* total gutter */
+  --bs-container-pad-x: calc(var(--bs-gutter-x) / 2); /* 0.75rem */
+  /* Optional: ultra-wide override at >=1536px */
+  --container-2xl-max: 80rem;            /* 1280px */
 }
 
 @theme inline {
@@ -10,6 +15,25 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+
+   /* Breakpoints (Bootstrap v5) */
+  --bs-breakpoint-sm: 36rem;   /* 576px */
+  --bs-breakpoint-md: 48rem;   /* 768px */
+  --bs-breakpoint-lg: 62rem;   /* 992px */
+  --bs-breakpoint-xl: 75rem;   /* 1200px */
+  --bs-breakpoint-xxl: 87.5rem;/* 1400px */
+
+  /* Container widths (Bootstrap v5) */
+  --bs-container-sm: 33.75rem;   /* 540px */
+  --bs-container-md: 45rem;      /* 720px */
+  --bs-container-lg: 60rem;      /* 960px */
+  --bs-container-xl: 71.25rem;   /* 1140px */
+  --bs-container-xxl: 82.5rem;   /* 1320px */
+
+  /* Gutters */
+  --bs-gutter-x: 1.5rem;
+  --bs-container-pad-x: calc(var(--bs-gutter-x) / 2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,3 +48,53 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.container{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+  width: 100%;
+  margin-inline: auto;                           /* center horizontally */
+  padding-left: var(--bs-container-pad-x);
+  padding-right: var(--bs-container-pad-x);
+}
+
+/* .container: Bootstrap v5 widths (use LITERAL breakpoints) */
+@media (min-width: 576px) {  /* sm */
+  .container { max-width: 540px; }
+}
+@media (min-width: 768px) {  /* md */
+  .container { max-width: 720px; }
+}
+@media (min-width: 992px) {  /* lg */
+  .container { max-width: 960px; }
+}
+@media (min-width: 1200px) { /* xl */
+  .container { max-width: 1140px; }
+}
+@media (min-width: 1400px) { /* xxl */
+  .container { max-width: 1320px; }
+}
+
+/* Optional project-specific tweak at >=1536px (2xl) */
+@media (min-width: 1536px) {
+  .container { max-width: var(--container-2xl-max); } /* 1280px */
+}
+
+/* .container-fluid: stays full width */
+.container-fluid { /* no max-width */ }
+
+/* Fixed variants (fluid below their breakpoint) */
+@media (min-width: 576px)  { .container-sm  { max-width: 540px; } }
+@media (min-width: 768px)  { .container-md  { max-width: 720px; } }
+@media (min-width: 992px)  { .container-lg  { max-width: 960px; } }
+@media (min-width: 1200px) { .container-xl  { max-width: 1140px; } }
+@media (min-width: 1400px) { .container-xxl { max-width: 1320px; } }
