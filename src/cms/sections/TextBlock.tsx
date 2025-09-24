@@ -25,6 +25,11 @@ type Props = { data?: WpTextBlock | null };
 // }
 
 
+// function sanitize(html: string) {
+//     return html;
+// }
+
+
 
 export default function TextBlock({ data }: Props) {
     const {
