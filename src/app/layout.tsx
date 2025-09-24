@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Brygada_1918, Mulish, Outfit } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const brygada = Brygada_1918({ subsets: ["latin"], weight: ["400", "500", "600", "700"], display: "swap", variable: "--font-brygada" });
+const mulish = Mulish({ subsets: ["latin"], weight: ["200", "300", "400", "500", "600", "700", "800", "900"], display: "swap", variable: "--font-mulish" });
+const outfit = Outfit({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], display: "swap", variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${brygada.variable} ${mulish.variable} ${outfit.variable} antialiased`}
       >
         {children}
       </body>

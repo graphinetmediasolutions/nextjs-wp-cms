@@ -1,3 +1,5 @@
+import { Button } from "./ui/button";
+
 // components/RevalidateButton.tsx (Server Component)
 export default function RevalidateButton() {
   async function run() {
@@ -13,9 +15,10 @@ export default function RevalidateButton() {
   }
   return (
     <form action={run}>
-      <button type="submit" className="rounded border px-3 py-2 text-sm">
+      {/* <button  className="rounded border px-3 py-2 text-sm">
         Revalidate now
-      </button>
+      </button> */}
+      <Button type="submit" variant="secondary" size="lg">Secondary</Button>
     </form>
   );
 }

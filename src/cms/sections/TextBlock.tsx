@@ -68,17 +68,17 @@ export default function TextBlock({ data }: Props) {
                         } ${flipOnDesktop ? "md:[&>div:first-child]:order-1" : ""} ${alignClass}`}
                 >
                     {/* Content */}
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-4">
 
                         {heading && (
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{heading}</h2>
+                            <h2 className="">{heading}</h2>
                         )}
                         {subheading && (
-                            <p className="text-sm tracking-wide uppercase text-gray-500">{subheading}</p>
+                            <p className="">{subheading}</p>
                         )}
                         {textblockBody && (
                             <div
-                                className="prose prose-gray max-w-none [&_*]:text-gray-700"
+                                className="richtext"
                                 dangerouslySetInnerHTML={{ __html: sanitize(textblockBody) }}
                             />
                         )}

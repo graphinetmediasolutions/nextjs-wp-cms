@@ -10,8 +10,58 @@ import RevalidateButton from "@/components/RevalidateButton";
 import { nextSlugToWpSlug } from "@/utils/nextSlugToWpSlug";
 import { SeoQuery } from "@/queries/general/SeoQuery";
 import { setSeoData } from "@/utils/seoData";
+import { BlogSwiper } from "@/cms/sections/blogs/BlogSlider";
 
-
+const dummyBlogs = [
+  {
+    blogDate: "Sep 24, 2025",
+    blogExcerpt: "This is a short excerpt from the first blog post. It gives a teaser of the content.",
+    blogSlug: "first-post",
+    blogTitle: "Getting Started with Next.js and Tailwind",
+    blogAuthor: "John Doe",
+    blogImage: {
+      node: {
+        sourceUrl: "https://picsum.photos/600/400?random=1",
+      },
+    },
+  },
+  {
+    blogDate: "Sep 20, 2025",
+    blogExcerpt: "Learn how to use GraphQL with Apollo Client in a Next.js app.",
+    blogSlug: "graphql-apollo-next",
+    blogTitle: "GraphQL + Apollo in Next.js",
+    blogAuthor: "Jane Smith",
+    blogImage: {
+      node: {
+        sourceUrl: "https://picsum.photos/600/400?random=2",
+      },
+    },
+  },
+  {
+    blogDate: "Sep 15, 2025",
+    blogExcerpt: "A deep dive into Tailwind CSS v4 and how to customize it with CSS variables.",
+    blogSlug: "tailwind-v4",
+    blogTitle: "Mastering Tailwind v4",
+    blogAuthor: "Alex Carter",
+    blogImage: {
+      node: {
+        sourceUrl: "https://picsum.photos/600/400?random=3",
+      },
+    },
+  },
+  {
+    blogDate: "Sep 10, 2025",
+    blogExcerpt: "Explore the power of shadcn/ui and how it integrates with your design system.",
+    blogSlug: "shadcn-ui-guide",
+    blogTitle: "shadcn/ui Complete Guide",
+    blogAuthor: "Maria Lopez",
+    blogImage: {
+      node: {
+        sourceUrl: "https://picsum.photos/600/400?random=4",
+      },
+    },
+  },
+];
 
 type Props = {
   params: { slug: string };
@@ -54,7 +104,7 @@ export default async function Page({
 }: {
   params: { slug?: string[] };
 }) {
-  const parts = params.slug ?? [];
+  const parts = await params.slug ?? [];
   const uri = parts.length ? `/${parts.join("/")}/` : "/";
 
   const { nodeByUri } = await fetchGraphQL<{ nodeByUri: any }>(
@@ -66,6 +116,13 @@ export default async function Page({
   return (
     <>
       <PageTemplate page={nodeByUri} />
+       <BlogSwiper
+        items={dummyBlogs}
+        perView={3}       // 3 per row on desktop
+        perScroll={1}     // scroll 1 per swipe
+        loop={false}
+        autoplay={false}   // 4s autoplay
+      />
       <RevalidateButton />
     </>
   );
