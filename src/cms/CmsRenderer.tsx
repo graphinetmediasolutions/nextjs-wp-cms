@@ -10,7 +10,7 @@ type Block = {
 } & Record<string, unknown>;
 
 export default function CmsRenderer({ sections = [] }: { sections?: Block[] }) {
-  console.log("Sections in CmsRenderer", sections);
+  // console.log("Sections in CmsRenderer", sections);
   if (!sections.length) return null;
 
   return (

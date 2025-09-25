@@ -389,3 +389,6 @@
     @apply h-10 px-6 text-base;
   }
 }
+
+.swiper-wrapper { display: flex !important; }
+.swiper-slide { flex-shrink: 0 !important; }

@@ -1,7 +1,7 @@
 "use client";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
+// import "swiper/css/pagination";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, FreeMode, Mousewheel } from "swiper/modules";
@@ -47,8 +47,8 @@ export function BlogSwiper({
 
     const breakpoints = {
         0: { slidesPerView: 1, slidesPerGroup: 1, spaceBetween: 16 },
-        640: { slidesPerView: Math.min(perView, 2), slidesPerGroup: Math.min(perScroll, 1), spaceBetween: 16 },
-        768: { slidesPerView: Math.min(perView, 3), slidesPerGroup: Math.min(perScroll, 2), spaceBetween: 20 },
+        640: { slidesPerView: 2, slidesPerGroup: Math.min(perScroll, 1), spaceBetween: 16 },
+        768: { slidesPerView: 3, slidesPerGroup: Math.min(perScroll, 2), spaceBetween: 20 },
         1024: { slidesPerView: perView, slidesPerGroup: perScroll, spaceBetween: 24 },
     };
 
@@ -119,8 +119,8 @@ export function BlogSwiper({
                     onSlideChange={handleSlideChange}
                     onSwiper={handleSwiper}
                     spaceBetween={20}
-                    slidesPerView={4}
-                    loop={loop}
+                    slidesPerView={3}
+                    loop={loop} 
                     speed={550}
                     autoplay={autoplayConfig || undefined}
                     breakpoints={breakpoints}

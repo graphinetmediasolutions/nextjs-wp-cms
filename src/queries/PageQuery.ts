@@ -104,31 +104,49 @@ export const NodeByUriQuery = gql`
 
 
 
+
            ... on PageBuilderPageLayoutBlogBlockLayout {
-            chooseLayout
-            cssClass
-            blogCarousel
-            blogGridLayout
-            displayPerRow
-            fieldGroupName
-            heading
-            sectionWidth
-            sliderPerScroll
-            subheading
-            blogItems {
-              blogDate
-              blogExcerpt
-              blogSlug
-              blogTitle
-              fieldGroupName
-              blogAuthor
-              blogImage {
-                node {
-                  sourceUrl
+          actionButtonText
+          cssClass
+          blogPage {
+            edges {
+              node {
+                link
+                slug
+                ... on Page {
+                  id
+                  title(format: RENDERED)
+                  uri
+                  featuredImage {
+                    node {
+                      altText
+                      sourceUrl
+                    }
+                  }
                 }
-               }
-             }
-           }
+              }
+            }
+          }
+          isSlider
+          heading
+          fieldGroupName
+          displayPerRow
+          displayPerPage
+          layout
+          pagination
+          sectionWidth
+          sliderPerScroll
+          sliderSpeed
+          subheading
+        }
+          
+
+
+
+
+
+
+          
 
 
 

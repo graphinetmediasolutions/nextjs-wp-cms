@@ -4,13 +4,12 @@ import { print } from "graphql";
 import { fetchGraphQL } from "@/utils/fetchGraphQL";
 // import { NodeByUriQuery } from "@/components/Templates/Page/PageQuery";
 // import PageTemplate from "@/components/Templates/Page/PageTemplate";
-import { NodeByUriQuery } from "@/components/Templates/Page/PageQuery";
+import { NodeByUriQuery } from "@/queries/PageQuery";
 import PageTemplate from "@/components/Templates/Page/PageTemplate";
 import RevalidateButton from "@/components/RevalidateButton";
 import { nextSlugToWpSlug } from "@/utils/nextSlugToWpSlug";
 import { SeoQuery } from "@/queries/general/SeoQuery";
 import { setSeoData } from "@/utils/seoData";
-import { BlogSwiper } from "@/cms/sections/blogs/BlogSlider";
 
 const dummyBlogs = [
   {
@@ -116,13 +115,8 @@ export default async function Page({
   return (
     <>
       <PageTemplate page={nodeByUri} />
-       <BlogSwiper
-        items={dummyBlogs}
-        perView={3}       // 3 per row on desktop
-        perScroll={1}     // scroll 1 per swipe
-        loop={false}
-        autoplay={false}   // 4s autoplay
-      />
+
+    
       <RevalidateButton />
     </>
   );
