@@ -46,6 +46,8 @@ export default function BlogSection({
     case "Layout 3":
       return <BlogGridLayout3 items={items} />;
     default:
-      return <BlogGridLayout1 items={items} />;
+      return <BlogGridLayout1
+       perView={perView ?? 3}
+      items={items} />;
   }
 }

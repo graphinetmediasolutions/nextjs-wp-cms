@@ -93,7 +93,7 @@ export default function BlogCarouselLayout1({
 
                   {item.title && (
                     <h3 className="text-lg font-semibold hover:underline">
-                      <NextLink href={`/blog/${item.slug}`}>{item.title}</NextLink>
+                      <Link href={item?.uri ?? "#"}>{item.title}</Link>
                     </h3>
                   )}
 
@@ -104,7 +104,7 @@ export default function BlogCarouselLayout1({
                   )}
 
                   <Link
-                    href={`/blog/${item.slug}`}
+                    href={item?.uri ?? "#"}
                     className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                   >
                     <MoveUpRight size={20} className="inline-block  mr-[6px] text-[17px]" />
