@@ -10,7 +10,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import WheelGestures from "embla-carousel-wheel-gestures";
 import Image from "next/image";
-import { type BlogItem } from "./BlogGridLayout1";
+import { BlogItem } from "@/lib/mappers/mapBlogBlock";
 
 export default function BlogCarouselLayout3({ items }: { items: BlogItem[] }) {
   return (
