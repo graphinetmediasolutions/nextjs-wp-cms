@@ -17,7 +17,6 @@ type Props = {
   showArrow?: boolean;
   showBullets?: boolean;
   sliderSpeed?: number | string;
-  loopForSlider: boolean;
 };
 
 export default function BlogCarouselLayout1({
@@ -95,32 +94,24 @@ export default function BlogCarouselLayout1({
         </div>
       )}
       // --- Custom arrows (per-layout icons/placement) ---
-     renderArrows={({ goPrev, goNext, canPrev, canNext, isScrollable }) =>
-        isScrollable && (
-          <>
-            <button
-              onClick={goPrev}
-              aria-label="Previous"
-              disabled={!canPrev}
-              className={`absolute left-2 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow ${
-                !canPrev ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              <ChevronLeft />
-            </button>
-            <button
-              onClick={goNext}
-              aria-label="Next"
-              disabled={!canNext}
-              className={`absolute right-2 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow ${
-                !canNext ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            >
-              <ChevronRight />
-            </button>
-          </>
-        )
-      }
+      renderArrows={({ goPrev, goNext }) => (
+        <>
+          <button
+            onClick={goPrev}
+            aria-label="Previous"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            onClick={goNext}
+            aria-label="Next"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow"
+          >
+            <ChevronRight />
+          </button>
+        </>
+      )}
       // --- Custom dots (per-layout style/placement) ---
       renderDots={({ goTo, selectedIndex, scrollSnaps }) => (
         <div className="mt-6 flex justify-center gap-3">

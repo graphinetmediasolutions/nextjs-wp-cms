@@ -106,38 +106,46 @@ export const NodeByUriQuery = gql`
 
 
            ... on PageBuilderPageLayoutBlogBlockLayout {
-          actionButtonText
-          cssClass
-          blogPage {
+          heading
+          subheading
+          showPost
+          displayPerRow
+          layout
+          isSlider
+          autoplay
+          showArrow
+          showBullets
+          sliderSpeed
+          sliderPerScroll
+          loopForSlider
+          pagination
+          actionButtonLabel
+          showDate
+          showAuthor
+          sectionWidth
+          cssClass        
+          parentPage {
             edges {
               node {
-                link
-                slug
-                ... on Page {
-                  id
-                  title(format: RENDERED)
-                  uri
-                  featuredImage {
-                    node {
-                      altText
-                      sourceUrl
-                    }
-                  }
-                }
+                id
               }
             }
           }
-          isSlider
-          heading
-          fieldGroupName
-          displayPerRow
-          displayPerPage
-          layout
-          pagination
-          sectionWidth
-          sliderPerScroll
-          sliderSpeed
-          subheading
+          childPages {
+            id
+            title
+            slug
+            uri
+            date
+            excerpt
+            
+            author {
+              node {
+                id
+                name
+              }
+            }
+          }
         }
           
 

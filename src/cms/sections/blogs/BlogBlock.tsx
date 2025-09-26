@@ -1,9 +1,10 @@
 // import BlogSection from "@/components/blog/BlogSection.server";
 import BlogSection from "@/components/blog/BlogSection";
 import Section from "@/components/primitives/Section";
-import { mapBlogBlock } from "@/lib/mappers/mapBlogBlock";
+import { mapBlogBlock, BlogBlockData } from "@/lib/mappers/mapBlogBlock";
 
-export default function BlogBlock({ data }: { data: any }) {
+
+export default function BlogBlock({ data }: { data: BlogBlockData }) {
   const block = mapBlogBlock(data);
 
   console.log("BlogBlock data:", block);
@@ -16,23 +17,27 @@ export default function BlogBlock({ data }: { data: any }) {
 
 
     >
-      {block.heading && (
+      {block?.heading && (
         <h2 className="text-3xl font-bold mb-4">{block.heading}</h2>
       )}
-      {block.subheading && (
+      {block?.subheading && (
         <p className="text-gray-600 mb-8">{block.subheading}</p>
       )}
 
       <BlogSection
-        items={block.items}
-        isSlider={block.isSlider}
-        layout={block.layout}
-        perView={block.displayPerRow ?? 3}
-        perScroll={block.sliderPerScroll ?? 1}
-        autoplay={Number(block.sliderSpeed) || 4000}
+        items={block?.items}
+        isSlider={block?.isSlider}
+        layout={block?.layout}
+        perView={block?.displayPerRow ?? 3}
+        perScroll={block?.sliderPerScroll ?? 1}
+       autoplay={block?.autoplay}
+       sliderSpeed={block?.sliderSpeed}
+        showArrow={block?.showArrow}
+        showBullets={block?.showBullets}
+       loopForSlider={block?.loopForSlider}
       />
 
-      {block.actionButtonText && (
+      {block?.actionButtonText && (
         <div className="mt-8 text-center">
           <a
             href="#"

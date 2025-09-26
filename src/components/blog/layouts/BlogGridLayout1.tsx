@@ -2,15 +2,9 @@ import { MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export type BlogItem = {
-  slug: string;
-  title: string;
-  excerpt?: string;
-  date?: string;
-  image?: string;
-  uri?: string;
- 
-};
+import { BlogItem } from "@/lib/mappers/mapBlogBlock";
+import { perViewToGridCols } from "@/hooks/useCollectionLayout";
+
 
 export default function BlogGridLayout1({
   items,
@@ -19,20 +13,12 @@ export default function BlogGridLayout1({
   items: BlogItem[];
   perView?: number;
 }) {
-  // Convert perView into a Tailwind grid-cols class dynamically
-  const gridColsClass = `grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-1`;
-    // ✅ Map of perView -> Tailwind class
-  const perViewClass: Record<number, string> = {
-    1: "lg:grid-cols-1",
-    2: "lg:grid-cols-2",
-    3: "lg:grid-cols-3",
-    4: "lg:grid-cols-4",
-  };
+ 
 
-  console.log("per view:", perView);
+    const gridCols = perViewToGridCols(perView);
 
   return (
-    <div className={`grid gap-6 grid-cols-1 sm:grid-cols-2 ${perViewClass[perView]}`}>
+    <div className={`grid gap-6 ${gridCols}`}>
       {items?.map((item, i) => (
         <div
           key={item?.slug ?? i}
@@ -79,9 +65,11 @@ export default function BlogGridLayout1({
             )}
 
             {item?.excerpt && (
-              <p className="text-sm text-gray-600 line-clamp-3">
-                {item?.excerpt}
-              </p>
+              <div
+              dangerouslySetInnerHTML={{ __html: item?.excerpt }}
+              className="text-sm text-gray-600 line-clamp-3" />
+               
+            
             )}
 
             <Link
