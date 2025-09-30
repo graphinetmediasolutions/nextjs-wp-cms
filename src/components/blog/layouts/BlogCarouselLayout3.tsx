@@ -228,6 +228,16 @@ export default function BlogCarouselLayout3({ block }: { block: BlogBlockData })
           ))}
         </div>
       )} */}
+      {block.actionButtonText && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block.parentPages?.[0]?.uri ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block.actionButtonText}
+          </Link>
+        </div>
+      )}
     </>
   );
 }
