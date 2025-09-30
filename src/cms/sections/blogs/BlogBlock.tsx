@@ -1,6 +1,6 @@
 // components/blog/BlogBlock.tsx
 import Section from "@/components/primitives/Section";
-import Link from "next/link";
+
 import BlogSection from "@/components/blog/BlogSection";
 import { mapBlogBlock, type BlogBlockData } from "@/lib/mappers/mapBlogBlock";
 

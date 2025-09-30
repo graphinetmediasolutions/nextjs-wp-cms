@@ -1,10 +1,11 @@
 // components/SafeHeading.tsx
 import React from "react";
 import DOMPurify from "isomorphic-dompurify";
+type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "div" | "span";
 
 type SafeHeadingProps = {
   html: string;
-  as?: keyof JSX.IntrinsicElements; // e.g. 'h1', 'h2', etc.
+  as?: HeadingTag; // e.g. 'h1', 'h2', etc.
   className?: string; // Tailwind classes you want to apply from outside
 };
 
