@@ -114,10 +114,10 @@ export default function BlogCarouselLayout3({ block }: { block: BlogBlockData })
         loop={loop}
         showArrow={false}
         showBullets={IsShowBullets}
-        breakpoints={{
-          "(max-width: 640px)": { slidesToScroll: 2 },
-          "(min-width: 641px) and (max-width: 1023px)": { slidesToScroll: 2 },
-          "(min-width: 1024px)": { slidesToScroll: 3 }, // ✅ Your custom logic per layout
+         breakpoints={{
+          "(max-width: 640px)": { slidesToScroll: 1 },
+          "(min-width: 641px) and (max-width: 1023px)": { slidesToScroll: 1 },
+          "(min-width: 1024px)": { slidesToScroll: sliderPerScroll }, // ✅ Your custom logic per layout
         }}
         exposeNav={setNav}
         renderItem={(item, i) => (
