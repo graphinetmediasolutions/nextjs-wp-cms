@@ -68,7 +68,7 @@ export default async function Page({
       <PageTemplate page={nodeByUri} />
 
     
-      <RevalidateButton />
+      {/* <RevalidateButton /> */}
     </>
   );
 }
