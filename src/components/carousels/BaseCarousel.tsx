@@ -4,13 +4,11 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import WheelGestures from "embla-carousel-wheel-gestures";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type SlidesToScroll = { base: number; sm: number; md: number; lg: number };
 
@@ -30,10 +28,21 @@ type BaseCarouselRenderDotsArgs = {
   scrollSnaps: number[];
 };
 
+type ExposedNav = {
+  goPrev: () => void;
+  goNext: () => void;
+  goTo: (i: number) => void;
+  selectedIndex: number;
+  scrollSnaps: number[];
+  canPrev: boolean;
+  canNext: boolean;
+  isScrollable: boolean;
+};
+
 type BaseCarouselProps<TItem> = {
   items: TItem[];
   renderItem: (item: TItem, index: number) => React.ReactNode;
-
+  className?: string;
   itemBasis: string;
   slidesToScroll: SlidesToScroll;
   autoplayDelay?: number | false;
@@ -47,12 +56,17 @@ type BaseCarouselProps<TItem> = {
 
   wheelGestures?: boolean;
   duration?: number;
+
+  /** NEW (optional): expose nav/state to parent so arrows can be rendered anywhere */
+  exposeNav?: (nav: ExposedNav) => void;
+  breakpoints?: Record<string, { slidesToScroll?: number }>;
 };
 
 export default function BaseCarousel<TItem>({
   items,
   renderItem,
   itemBasis,
+  className,
   slidesToScroll,
   autoplayDelay = 4000,
   loop = true,
@@ -62,6 +76,8 @@ export default function BaseCarousel<TItem>({
   renderDots,
   wheelGestures = true,
   duration = 50,
+  breakpoints, // 👈 added
+  exposeNav,
 }: BaseCarouselProps<TItem>) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -74,24 +90,60 @@ export default function BaseCarousel<TItem>({
   const autoplayRef = useRef(
     typeof autoplayDelay === "number"
       ? Autoplay({
-          delay: autoplayDelay,
-          stopOnInteraction: false, // we will manage the timer manually
-          stopOnMouseEnter: false,
-          jump: false,
-        })
+        delay: autoplayDelay,
+        stopOnInteraction: false, // we will manage the timer manually
+        stopOnMouseEnter: false,
+        jump: false,
+      })
       : null
   );
 
-  // Sync state with Embla
+  // Helpers (defined as functions so we can pass them to exposeNav)
+  const bumpAutoplay = () => autoplayRef.current?.reset?.();
+
+  function goPrev() {
+    bumpAutoplay();
+    if (api?.canScrollPrev()) api.scrollPrev();
+  }
+
+  function goNext() {
+    bumpAutoplay();
+    if (api?.canScrollNext()) api.scrollNext();
+  }
+
+  function goTo(i: number) {
+    bumpAutoplay();
+    api?.scrollTo(i);
+  }
+
+  // Sync state with Embla and expose nav to parent
   useEffect(() => {
     if (!api) return;
 
     const update = () => {
-      setScrollSnaps(api.scrollSnapList());
-      setSelectedIndex(api.selectedScrollSnap());
-      setCanPrev(api.canScrollPrev());
-      setCanNext(api.canScrollNext());
-      setIsScrollable(api.scrollSnapList().length > 1);
+      const snaps = api.scrollSnapList();
+      const sel = api.selectedScrollSnap();
+      const prev = api.canScrollPrev();
+      const next = api.canScrollNext();
+      const scrollable = snaps.length > 1;
+
+      setScrollSnaps(snaps);
+      setSelectedIndex(sel);
+      setCanPrev(prev);
+      setCanNext(next);
+      setIsScrollable(scrollable);
+
+      // Expose controls/state to parent (optional)
+      exposeNav?.({
+        goPrev,
+        goNext,
+        goTo,
+        selectedIndex: sel,
+        scrollSnaps: snaps,
+        canPrev: prev,
+        canNext: next,
+        isScrollable: scrollable,
+      });
     };
 
     update();
@@ -99,49 +151,40 @@ export default function BaseCarousel<TItem>({
     api.on("reInit", update);
 
     return () => {
-      api.off("select", update);
-      api.off("reInit", update);
+      try {
+        api.off("select", update);
+        api.off("reInit", update);
+      } catch {
+        /* no-op */
+      }
     };
-  }, [api]);
+  }, [api, exposeNav]); // keep deps minimal
 
-  // Restart the autoplay timer BEFORE navigating to avoid a double tick
-  const bumpAutoplay = () => autoplayRef.current?.reset();
-
-  const goPrev = () => {
-    bumpAutoplay();
-    if (canPrev) api?.scrollPrev();
+  const arrowsArgs = {
+    goPrev,
+    goNext,
+    selectedIndex,
+    scrollSnaps,
+    canPrev,
+    canNext,
+    isScrollable,
   };
-
-  const goNext = () => {
-    bumpAutoplay();
-    if (canNext) api?.scrollNext();
-  };
-
-  const goTo = (i: number) => {
-    bumpAutoplay();
-    api?.scrollTo(i);
-  };
-
-  const arrowsArgs = { goPrev, goNext, selectedIndex, scrollSnaps, canPrev, canNext, isScrollable };
   const dotsArgs = { goTo, selectedIndex, scrollSnaps };
 
   return (
     <div className="relative not-prose">
       <Carousel
         setApi={setApi}
+        className={className}
         opts={{
           align: "start",
           loop,
           duration,
           slidesToScroll: slidesToScroll.lg,
-          breakpoints: {
+          breakpoints: breakpoints || { // 👈 use provided breakpoints OR fallback
             "(max-width: 639px)": { slidesToScroll: slidesToScroll.base },
-            "(min-width: 640px) and (max-width: 767px)": {
-              slidesToScroll: slidesToScroll.sm,
-            },
-            "(min-width: 768px) and (max-width: 1023px)": {
-              slidesToScroll: slidesToScroll.md,
-            },
+            "(min-width: 640px) and (max-width: 767px)": { slidesToScroll: slidesToScroll.sm },
+            "(min-width: 768px) and (max-width: 1023px)": { slidesToScroll: slidesToScroll.md },
             "(min-width: 1024px)": { slidesToScroll: slidesToScroll.lg },
           },
         }}
@@ -157,15 +200,11 @@ export default function BaseCarousel<TItem>({
             </CarouselItem>
           ))}
         </CarouselContent>
-
-       
       </Carousel>
 
-      {/* Custom controls */}
-      {renderArrows?.(arrowsArgs)}
-      {renderDots && showBullets
-        && renderDots(dotsArgs)}
-       
+      {/* Keep internal controls working if you still pass them */}
+      {showArrow && renderArrows?.(arrowsArgs)}
+      {renderDots && showBullets && renderDots(dotsArgs)}
     </div>
   );
 }

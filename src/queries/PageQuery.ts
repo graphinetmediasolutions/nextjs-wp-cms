@@ -108,6 +108,7 @@ export const NodeByUriQuery = gql`
            ... on PageBuilderPageLayoutBlogBlockLayout {
           heading
           subheading
+          backgroundColor
           showPost
           displayPerRow
           layout
@@ -128,6 +129,7 @@ export const NodeByUriQuery = gql`
             edges {
               node {
                 id
+                uri
               }
             }
           }
@@ -137,6 +139,12 @@ export const NodeByUriQuery = gql`
             slug
             uri
             date
+            featuredImage{
+            node{
+              sourceUrl
+              altText
+             }
+            }
             excerpt
             
             author {

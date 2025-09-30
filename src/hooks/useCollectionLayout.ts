@@ -11,6 +11,45 @@ export type CollectionLayoutInputs = {
     sliderSpeed?: string | number | null;          // autoplay delay in ms
 };
 
+
+
+
+const BASE: Record<number, string> = {
+  1: "basis-full",
+  2: "basis-1/2",
+  3: "basis-1/3",
+  4: "basis-1/4",
+  5: "basis-1/5",
+  6: "basis-1/6",
+};
+
+const SM: Record<number, string> = {
+  1: "sm:basis-full",
+  2: "sm:basis-1/2",
+  3: "sm:basis-1/3",
+  4: "sm:basis-1/4",
+  5: "sm:basis-1/5",
+  6: "sm:basis-1/6",
+};
+
+const MD: Record<number, string> = {
+  1: "md:basis-full",
+  2: "md:basis-1/2",
+  3: "md:basis-1/3",
+  4: "md:basis-1/4",
+  5: "md:basis-1/5",
+  6: "md:basis-1/6",
+};
+
+const LG: Record<number, string> = {
+  1: "lg:basis-full",
+  2: "lg:basis-1/2",
+  3: "lg:basis-1/3",
+  4: "lg:basis-1/4",
+  5: "lg:basis-1/5",
+  6: "lg:basis-1/6",
+};
+
 const clampInt = (v: unknown, min: number, max: number, fallback: number) => {
     const n =
         typeof v === "string" ? parseInt(v, 10)
@@ -61,6 +100,24 @@ export function perViewToItemBasis(perView?: number | null) {
     }
 }
 
+
+
+export function itemBasisResponsive({
+  base = 1,
+  sm = base,
+  md = sm,
+  lg = md,
+}: { base?: number; sm?: number; md?: number; lg?: number }) {
+  // clamp values to 1..6 to avoid undefined
+  const clamp = (n?: number) => Math.min(6, Math.max(1, n ?? 1));
+  const b = clamp(base);
+  const s = clamp(sm);
+  const m = clamp(md);
+  const l = clamp(lg);
+
+  return [BASE[b], SM[s], MD[m], LG[l]].join(" ");
+}
+
 /** Embla slidesToScroll with sensible defaults for breakpoints. */
 export function computeSlidesToScroll(perScroll?: number | null) {
     const s = clampInt(perScroll, 1, 6, 1);
@@ -74,29 +131,29 @@ export function computeSlidesToScroll(perScroll?: number | null) {
 
 /** Normalize autoplay input to number (ms) or false. */
 function normalizeAutoplay(
-  autoplay?: boolean | string | number | null,
-  sliderSpeed?: string | number | null,
-  defaultDelay = 4000
+    autoplay?: boolean | string | number | null,
+    sliderSpeed?: string | number | null,
+    defaultDelay = 4000
 ): number | false {
-  // 1. If autoplay is explicitly false → disable it
-  if (autoplay === false) return false;
+    // 1. If autoplay is explicitly false → disable it
+    if (autoplay === false) return false;
 
-  // 2. If autoplay is true → use sliderSpeed if provided, else fallback
-  if (autoplay === true) {
-    const speedNum = Number(sliderSpeed);
-    return !isNaN(speedNum) && speedNum > 0 ? speedNum : defaultDelay;
-  }
+    // 2. If autoplay is true → use sliderSpeed if provided, else fallback
+    if (autoplay === true) {
+        const speedNum = Number(sliderSpeed);
+        return !isNaN(speedNum) && speedNum > 0 ? speedNum : defaultDelay;
+    }
 
-  // 3. If autoplay is a number/string → treat it as milliseconds
-  const autoNum = Number(autoplay);
-  if (!isNaN(autoNum) && autoNum > 0) return autoNum;
+    // 3. If autoplay is a number/string → treat it as milliseconds
+    const autoNum = Number(autoplay);
+    if (!isNaN(autoNum) && autoNum > 0) return autoNum;
 
-  // 4. If only sliderSpeed is present → use it
-  const sliderNum = Number(sliderSpeed);
-  if (!isNaN(sliderNum) && sliderNum > 0) return sliderNum;
+    // 4. If only sliderSpeed is present → use it
+    const sliderNum = Number(sliderSpeed);
+    if (!isNaN(sliderNum) && sliderNum > 0) return sliderNum;
 
-  // 5. Fallback default
-  return defaultDelay;
+    // 5. Fallback default
+    return defaultDelay;
 }
 /** Convenience helper (pure; safe on server). */
 export function useCollectionLayout(opts: CollectionLayoutInputs = {}) {

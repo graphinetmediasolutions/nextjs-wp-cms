@@ -18,7 +18,7 @@ export default function CmsRenderer({ sections = [] }: { sections?: Block[] }) {
       {sections.map((b, i) => {
         const Cmp = registry[b.__typename];
 
-        console.log("Rendering section:", b.__typename, Cmp);
+        // console.log("Rendering section:", b.__typename, Cmp);
         if (!Cmp) {
           if (process.env.NODE_ENV !== "production") {
             console.warn("Missing component for", b.__typename);

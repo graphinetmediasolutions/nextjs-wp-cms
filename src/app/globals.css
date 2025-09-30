@@ -392,3 +392,9 @@
 
 .swiper-wrapper { display: flex !important; }
 .swiper-slide { flex-shrink: 0 !important; }
+
+
+.blog-layout-carousel-one > .overflow-hidden {
+  overflow: visible !important;
+}
+
