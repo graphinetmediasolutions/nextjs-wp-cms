@@ -99,7 +99,7 @@ export function Header() {
                     <ul className="grid gap-2 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                       <li className="row-span-3">
                         <NavigationMenuLink asChild>
-                          <a
+                          <Link
                             className="from-muted/50 to-muted flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden transition"
                             href="/"
                           >
@@ -110,7 +110,7 @@ export function Header() {
                               Beautifully designed components built with
                               Tailwind CSS.
                             </p>
-                          </a>
+                          </Link>
                         </NavigationMenuLink>
                       </li>
                       <ListItem href="/docs" title="Introduction">
