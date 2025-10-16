@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Brygada_1918, Mulish, Outfit } from "next/font/google";
 import "./globals.css";
 
+import {Header} from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+
+
 const brygada = Brygada_1918({ subsets: ["latin"], weight: ["400", "500", "600", "700"], display: "swap", variable: "--font-brygada" });
 const mulish = Mulish({ subsets: ["latin"], weight: ["200", "300", "400", "500", "600", "700", "800", "900"], display: "swap", variable: "--font-mulish" });
 const outfit = Outfit({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], display: "swap", variable: "--font-outfit" });
@@ -21,7 +25,9 @@ export default function RootLayout({
       <body
         className={`${brygada.variable} ${mulish.variable} ${outfit.variable} antialiased`}
       >
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

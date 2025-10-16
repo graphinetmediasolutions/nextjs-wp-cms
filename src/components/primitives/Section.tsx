@@ -26,11 +26,11 @@ export default function Section({
   const container = containerClass(sectionWidth);
 
   return (
-    <section className={`relative w-full ${className}`} style={bgStyle({
+    <section className={`relative z-10 w-full ${className}`} style={bgStyle({
       color: backgroundColor,
       imageUrl: backgroundImageUrl,
     })}>
-      {overlay ? <div className={`absolute inset-0 ${overlay}`} /> : null}
+      {/* {overlay ? <div className={`absolute inset-0 pointer-events-none ${overlay}`} /> : null} */}
       <div className={`${container} relative z-10 ${padY}`}>
         {children}
       </div>
