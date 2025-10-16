@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -9,6 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import WheelGestures from "embla-carousel-wheel-gestures";
+import React, { useEffect, useRef, useState } from "react";
 
 type SlidesToScroll = { base: number; sm: number; md: number; lg: number };
 
@@ -57,7 +57,7 @@ type BaseCarouselProps<TItem> = {
   wheelGestures?: boolean;
   duration?: number;
 
-  /** Expose nav/state to parent so arrows can be rendered anywhere */
+  /** NEW (optional): expose nav/state to parent so arrows can be rendered anywhere */
   exposeNav?: (nav: ExposedNav) => void;
   breakpoints?: Record<string, { slidesToScroll?: number }>;
 };
@@ -76,7 +76,7 @@ export default function BaseCarousel<TItem>({
   renderDots,
   wheelGestures = true,
   duration = 50,
-  breakpoints,
+  breakpoints, // 👈 added
   exposeNav,
 }: BaseCarouselProps<TItem>) {
   const [api, setApi] = useState<CarouselApi | null>(null);
@@ -90,38 +90,33 @@ export default function BaseCarousel<TItem>({
   const autoplayRef = useRef(
     typeof autoplayDelay === "number"
       ? Autoplay({
-          delay: autoplayDelay,
-          stopOnInteraction: false, // manage manually
-          stopOnMouseEnter: false,
-          jump: false,
-        })
+        delay: autoplayDelay,
+        stopOnInteraction: false, // we will manage the timer manually
+        stopOnMouseEnter: false,
+        jump: false,
+      })
       : null
   );
 
-  // ---- Stable callbacks (fixes exhaustive-deps) ----
-  const bumpAutoplay = useCallback(() => {
-    autoplayRef.current?.reset?.();
-  }, []);
+  // Helpers (defined as functions so we can pass them to exposeNav)
+  const bumpAutoplay = () => autoplayRef.current?.reset?.();
 
-  const goPrev = useCallback(() => {
+  function goPrev() {
     bumpAutoplay();
     if (api?.canScrollPrev()) api.scrollPrev();
-  }, [api, bumpAutoplay]);
+  }
 
-  const goNext = useCallback(() => {
+  function goNext() {
     bumpAutoplay();
     if (api?.canScrollNext()) api.scrollNext();
-  }, [api, bumpAutoplay]);
+  }
 
-  const goTo = useCallback(
-    (i: number) => {
-      bumpAutoplay();
-      api?.scrollTo(i);
-    },
-    [api, bumpAutoplay]
-  );
+  function goTo(i: number) {
+    bumpAutoplay();
+    api?.scrollTo(i);
+  }
 
-  // ---- Sync state with Embla and expose nav to parent ----
+  // Sync state with Embla and expose nav to parent
   useEffect(() => {
     if (!api) return;
 
@@ -138,6 +133,7 @@ export default function BaseCarousel<TItem>({
       setCanNext(next);
       setIsScrollable(scrollable);
 
+      // Expose controls/state to parent (optional)
       exposeNav?.({
         goPrev,
         goNext,
@@ -162,15 +158,7 @@ export default function BaseCarousel<TItem>({
         /* no-op */
       }
     };
-  }, [api, exposeNav, goPrev, goNext, goTo]); // <-- include stable callbacks
-
-  // ---- Stabilize plugins array ----
-  const plugins = useMemo(() => {
-    const list: any[] = [];
-    if (autoplayRef.current) list.push(autoplayRef.current);
-    if (wheelGestures) list.push(WheelGestures({ forceWheelAxis: "x" }));
-    return list;
-  }, [wheelGestures]);
+  }, [api, exposeNav]); // keep deps minimal
 
   const arrowsArgs = {
     goPrev,
@@ -193,33 +181,28 @@ export default function BaseCarousel<TItem>({
           loop,
           duration,
           slidesToScroll: slidesToScroll.lg,
-          breakpoints:
-            breakpoints || {
-              "(max-width: 639px)": { slidesToScroll: slidesToScroll.base },
-              "(min-width: 640px) and (max-width: 767px)": {
-                slidesToScroll: slidesToScroll.sm,
-              },
-              "(min-width: 768px) and (max-width: 1023px)": {
-                slidesToScroll: slidesToScroll.md,
-              },
-              "(min-width: 1024px)": { slidesToScroll: slidesToScroll.lg },
-            },
+          breakpoints: breakpoints || { // 👈 use provided breakpoints OR fallback
+            "(max-width: 639px)": { slidesToScroll: slidesToScroll.base },
+            "(min-width: 640px) and (max-width: 767px)": { slidesToScroll: slidesToScroll.sm },
+            "(min-width: 768px) and (max-width: 1023px)": { slidesToScroll: slidesToScroll.md },
+            "(min-width: 1024px)": { slidesToScroll: slidesToScroll.lg },
+          },
         }}
-        plugins={plugins}
+        plugins={[
+          ...(autoplayRef.current ? [autoplayRef.current] : []),
+          ...(wheelGestures ? [WheelGestures({ forceWheelAxis: "x" })] : []),
+        ]}
       >
         <CarouselContent>
-          {items.map((item: any, i) => (
-            <CarouselItem
-              // Prefer a stable key if you have it: item.id || item.slug || ...
-              key={item?.id ?? item?.slug ?? i}
-              className={itemBasis}
-            >
+          {items.map((item, i) => (
+            <CarouselItem key={i} className={itemBasis}>
               {renderItem(item, i)}
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
+      {/* Keep internal controls working if you still pass them */}
       {showArrow && renderArrows?.(arrowsArgs)}
       {renderDots && showBullets && renderDots(dotsArgs)}
     </div>

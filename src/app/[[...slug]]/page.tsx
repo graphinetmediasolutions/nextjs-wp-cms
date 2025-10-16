@@ -10,6 +10,7 @@ import RevalidateButton from "@/components/RevalidateButton";
 import { nextSlugToWpSlug } from "@/utils/nextSlugToWpSlug";
 import { SeoQuery } from "@/queries/general/SeoQuery";
 import { setSeoData } from "@/utils/seoData";
+import Hero from "@/components/layout/Hero";
 
 
 
@@ -62,12 +63,18 @@ export default async function Page({
     { uri }
   );
 
+  console.log(nodeByUri);
+
   if (!nodeByUri || nodeByUri.__typename !== "Page") return notFound();
   return (
     <>
-      <PageTemplate page={nodeByUri} />
+      <Hero data={nodeByUri} />
+      <main>
+        <PageTemplate page={nodeByUri} />
+      </main>
 
-    
+
+
       <RevalidateButton />
     </>
   );

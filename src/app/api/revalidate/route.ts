@@ -34,9 +34,12 @@ export async function PUT(request: NextRequest) {
       tags: tags,
     });
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: "Error revalidating paths or tags" },
       { status: 500 },
     );
+
+    
   }
 }

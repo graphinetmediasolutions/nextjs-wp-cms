@@ -59,6 +59,7 @@ export const NodeByUriQuery = gql`
       ... on Page {
         id
         uri
+        title
         isFrontPage
         pageBuilder {
           pageLayout {
@@ -147,6 +148,70 @@ export const NodeByUriQuery = gql`
             }
             excerpt
             
+            author {
+              node {
+                id
+                name
+              }
+            }
+          }
+        }
+
+
+
+
+
+
+        ... on PageBuilderPageLayoutListingBlockLayout {
+         heading
+         headingTag
+         headingPosition
+          
+          subheading
+          subheadingPosition
+          description
+          layout
+          displayPerRow
+          showPost
+          isSlider
+          autoplay
+          showArrow
+          showBullets
+          sliderPerScroll
+          sliderSpeed
+          loopForSlider
+          actionButtonLabel
+          showDate
+          showAuthor
+          backgroundColor
+          sectionWidth
+          cssClass
+          backgroundImage{
+            node{
+              sourceUrl
+            }
+          }
+
+          parentPage {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+          childPages {
+            id
+            title
+            slug
+            uri
+            date
+            featuredImage{
+            node{
+              sourceUrl
+              altText
+             }
+            }
+             excerpt
             author {
               node {
                 id
