@@ -1,4 +1,3 @@
-// components/carousels/BaseCarousel.tsx
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -44,10 +43,7 @@ type BaseCarouselProps<TItem> = {
   items: TItem[];
   renderItem: (item: TItem, index: number) => React.ReactNode;
   className?: string;
-
-  /** ✅ now supports string OR (index) => string */
-  itemBasis?: string | ((index: number) => string);
-
+  itemBasis: string;
   slidesToScroll: SlidesToScroll;
   autoplayDelay?: number | false;
   loop?: boolean;
@@ -69,7 +65,7 @@ type BaseCarouselProps<TItem> = {
 export default function BaseCarousel<TItem>({
   items,
   renderItem,
-  itemBasis = "basis-full", // ✅ default
+  itemBasis,
   className,
   slidesToScroll,
   autoplayDelay = 4000,
@@ -90,17 +86,19 @@ export default function BaseCarousel<TItem>({
   const [canNext, setCanNext] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
 
+  // Keep autoplay under our control so it always restarts after clicks
   const autoplayRef = useRef(
     typeof autoplayDelay === "number"
       ? Autoplay({
           delay: autoplayDelay,
-          stopOnInteraction: false,
+          stopOnInteraction: false, // manage manually
           stopOnMouseEnter: false,
           jump: false,
         })
       : null
   );
 
+  // ---- Stable callbacks (fixes exhaustive-deps) ----
   const bumpAutoplay = useCallback(() => {
     autoplayRef.current?.reset?.();
   }, []);
@@ -123,6 +121,7 @@ export default function BaseCarousel<TItem>({
     [api, bumpAutoplay]
   );
 
+  // ---- Sync state with Embla and expose nav to parent ----
   useEffect(() => {
     if (!api) return;
 
@@ -159,10 +158,13 @@ export default function BaseCarousel<TItem>({
       try {
         api.off("select", update);
         api.off("reInit", update);
-      } catch {}
+      } catch {
+        /* no-op */
+      }
     };
-  }, [api, exposeNav, goPrev, goNext, goTo]);
+  }, [api, exposeNav, goPrev, goNext, goTo]); // <-- include stable callbacks
 
+  // ---- Stabilize plugins array ----
   const plugins = useMemo(() => {
     const list: any[] = [];
     if (autoplayRef.current) list.push(autoplayRef.current);
@@ -206,18 +208,15 @@ export default function BaseCarousel<TItem>({
         plugins={plugins}
       >
         <CarouselContent>
-          {items.map((item: any, i) => {
-            const basis =
-              typeof itemBasis === "function" ? itemBasis(i) : itemBasis; // ✅ resolve per slide
-            return (
-              <CarouselItem
-                key={item?.id ?? item?.slug ?? i}
-                className={basis}
-              >
-                {renderItem(item, i)}
-              </CarouselItem>
-            );
-          })}
+          {items.map((item: any, i) => (
+            <CarouselItem
+              // Prefer a stable key if you have it: item.id || item.slug || ...
+              key={item?.id ?? item?.slug ?? i}
+              className={itemBasis}
+            >
+              {renderItem(item, i)}
+            </CarouselItem>
+          ))}
         </CarouselContent>
       </Carousel>
 

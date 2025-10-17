@@ -28,7 +28,7 @@ type ExposedNav = {
   isScrollable: boolean;
 };
 
-export default function ListingCarouselLayout4({ block }: { block: ListingBlockData }) {
+export default function ListingCarouselLayout7({ block }: { block: ListingBlockData }) {
   const {
     items,
     displayPerRow = 3,
@@ -123,80 +123,49 @@ export default function ListingCarouselLayout4({ block }: { block: ListingBlockD
         }}
         exposeNav={setNav}
         renderItem={(item, i) => (
-          <div key={i} className="group transition-transform duration-300 ease-out hover:-translate-y-2 relative mt-10 md:mt-20">
-            <span className="absolute -top-6 lg:-top-12 left-2 z-20 text-5xl lg:text-[88px] font-extrabold leading-none group-hover:text-primary  transition-colors duration-300 ease-in-out text-white/95 drop-shadow">{String(i + 1).padStart(2, "0")}</span>
-            <div
-              key={item?.slug ?? i}
-              className="relative block bg-black overflow-hidden "
-            >
-              {item?.image && (
+          <div key={i} className="relative h-full p-6 
+    bg-gradient-to-r from-primary to-primary 
+    bg-[length:0%_100%] bg-left bg-no-repeat
+    transition-[background-size] duration-500 ease-out
+    hover:bg-[length:100%_100%] hover:text-white group  border border-gray-200 ">
 
-                <Image
-                  src={item.image}
-                  alt={item.title ?? "Blog image"}
-                  fill
-                  className="object-cover block w-full aspect-[16/9] no-underline absolute inset-0 h-full   opacity-75 transition-opacity duration-300 group-hover:opacity-50"
-                />
-
-              )}
-              <div className="relative p-4 sm:p-6 lg:p-8 ">
-
-
-                <div className="mt-[400px]">
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#18252E] group-hover:bg-primary text-white transition-all duration-500 -translate-y-10 group-hover:translate-y-0">
-                    <div className="px-6 py-5">
-
-
-
-                      {item?.title && (
-
-
-                        <h3 className="">
-                          <Link
-                            className="no-underline leading-[130%] text-2xl font-semibold  flex items-center justify-between"
-                            href={item?.uri ?? "#"}
-                          >
-                            <span className="line-clamp-2 text-white">{item.title}</span> <svg className="w-5 flex-shrink-0 h-auto -rotate-90 text-white" stroke="#fff" fill="#fff" xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16">
-                              <path
-                                d="M14.374,15.999 L5.562,15.999 L5.562,14.374 L13.238,14.374 L0.0,1.135 L1.137,0.1 L14.374,13.236 L14.374,5.562 L15.999,5.562 L15.999,14.374 L15.999,15.999 L14.374,15.999 Z">
-                              </path>
-                            </svg>
-                          </Link>
-                        </h3>
-                      )}
-
-                      {item?.excerpt && (
-                        <div
-                          className=" ">
-                          <div
-                            className="text-sm text-white  mt-2  max-h-0 overflow-hidden transition-all duration-500 group-hover:max-h-80 line-clamp-3 group-hover:mt-2 [&_*]:text-inherit"
-                            dangerouslySetInnerHTML={{ __html: item.excerpt }}
-                          />
-                          {item?.date && block?.showDate && (
-                            <p className="text-xs text-white mt-3">
-                              {new Date(item.date).toLocaleDateString()}
-                            </p>
-                          )}
-
-                          {item?.authorName && block?.showAuthor && (
-                            <p className="text-xs text-white">{item?.authorName}</p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              {/* <Link
-              href={item?.uri ?? "#"}
-              className="view-more-link flex gap-2 no-underline items-center capitalize text-md text-primary mt-auto"
-            >
-              <MoveUpRight size={20} /> read more
-            </Link> */}
+            <div className="w-10 h-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-4">
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-6 h-6" viewBox="0 0 24 24">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
             </div>
+            {item?.title && (
+
+
+              <h3 className="">
+                <Link
+                  className="no-underline   line-clamp-  text-lg text-gray-900 group-hover:text-white font-medium title-font mb-2"
+                  href={item?.uri ?? "#"}
+                >
+                  {item.title}
+                </Link>
+              </h3>
+            )}
+
+            {item?.excerpt && (
+              <div
+                className=" ">
+                <div
+                  className="text-sm text-black mt-2 group-hover:text-white  overflow-hidden transition-all line-clamp-3  [&_*]:text-inherit"
+                  dangerouslySetInnerHTML={{ __html: item.excerpt }}
+                />
+                {item?.date && block?.showDate && (
+                  <p className="text-xs text-black mt-3 group-hover:text-white">
+                    {new Date(item.date).toLocaleDateString()}
+                  </p>
+                )}
+
+                {item?.authorName && block?.showAuthor && (
+                  <p className="text-xs text-black group-hover:text-white">{item?.authorName}</p>
+                )}
+              </div>
+            )}
+
           </div>
         )}
         // keep dots inside (optional). If you want to move them out, set showBullets={false} and render below using `nav`.

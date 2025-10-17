@@ -28,7 +28,7 @@ type ExposedNav = {
   isScrollable: boolean;
 };
 
-export default function ListingCarouselLayout4({ block }: { block: ListingBlockData }) {
+export default function ListingCarouselLayout6({ block }: { block: ListingBlockData }) {
   const {
     items,
     displayPerRow = 3,
@@ -123,80 +123,64 @@ export default function ListingCarouselLayout4({ block }: { block: ListingBlockD
         }}
         exposeNav={setNav}
         renderItem={(item, i) => (
-          <div key={i} className="group transition-transform duration-300 ease-out hover:-translate-y-2 relative mt-10 md:mt-20">
-            <span className="absolute -top-6 lg:-top-12 left-2 z-20 text-5xl lg:text-[88px] font-extrabold leading-none group-hover:text-primary  transition-colors duration-300 ease-in-out text-white/95 drop-shadow">{String(i + 1).padStart(2, "0")}</span>
-            <div
-              key={item?.slug ?? i}
-              className="relative block bg-black overflow-hidden "
-            >
-              {item?.image && (
-
-                <Image
-                  src={item.image}
-                  alt={item.title ?? "Blog image"}
-                  fill
-                  className="object-cover block w-full aspect-[16/9] no-underline absolute inset-0 h-full   opacity-75 transition-opacity duration-300 group-hover:opacity-50"
-                />
-
-              )}
-              <div className="relative p-4 sm:p-6 lg:p-8 ">
+          <div key={i} className="relative overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg">
 
 
-                <div className="mt-[400px]">
-                  <div className="absolute bottom-0 left-0 right-0 bg-[#18252E] group-hover:bg-primary text-white transition-all duration-500 -translate-y-10 group-hover:translate-y-0">
-                    <div className="px-6 py-5">
+            {item?.image && (
+
+              <Image
+                src={item.image}
+                alt={item.title ?? "Blog image"}
+                fill
+                className="object-cover"
+              />
+
+            )}
+            <div className="relative bg-gradient-to-t from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64 h-full flex">
+
+
+              <div className="text-white bg-black/45 m-4 border border-[#fdc700] rounded-lg p-4 ">
 
 
 
-                      {item?.title && (
+                {item?.title && (
 
 
-                        <h3 className="">
-                          <Link
-                            className="no-underline leading-[130%] text-2xl font-semibold  flex items-center justify-between"
-                            href={item?.uri ?? "#"}
-                          >
-                            <span className="line-clamp-2 text-white">{item.title}</span> <svg className="w-5 flex-shrink-0 h-auto -rotate-90 text-white" stroke="#fff" fill="#fff" xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 16 16">
-                              <path
-                                d="M14.374,15.999 L5.562,15.999 L5.562,14.374 L13.238,14.374 L0.0,1.135 L1.137,0.1 L14.374,13.236 L14.374,5.562 L15.999,5.562 L15.999,14.374 L15.999,15.999 L14.374,15.999 Z">
-                              </path>
-                            </svg>
-                          </Link>
-                        </h3>
-                      )}
+                  <h3 className="">
+                    <Link
+                      className="no-underline leading-[130%] text-xl font-semibold line-clamp-2 text-white  "
+                      href={item?.uri ?? "#"}
+                    >
+                      {item.title}
+                    </Link>
+                  </h3>
+                )}
+                <div className="w-full h-px my-3 bg-yellow-400"></div>
 
-                      {item?.excerpt && (
-                        <div
-                          className=" ">
-                          <div
-                            className="text-sm text-white  mt-2  max-h-0 overflow-hidden transition-all duration-500 group-hover:max-h-80 line-clamp-3 group-hover:mt-2 [&_*]:text-inherit"
-                            dangerouslySetInnerHTML={{ __html: item.excerpt }}
-                          />
-                          {item?.date && block?.showDate && (
-                            <p className="text-xs text-white mt-3">
-                              {new Date(item.date).toLocaleDateString()}
-                            </p>
-                          )}
+                {item?.excerpt && (
+                  <div
+                    className=" ">
+                    <div
+                      className="text-sm text-white  mt-2  overflow-hidden transition-all line-clamp-3  [&_*]:text-inherit"
+                      dangerouslySetInnerHTML={{ __html: item.excerpt }}
+                    />
+                    {item?.date && block?.showDate && (
+                      <p className="text-xs text-white mt-3">
+                        {new Date(item.date).toLocaleDateString()}
+                      </p>
+                    )}
 
-                          {item?.authorName && block?.showAuthor && (
-                            <p className="text-xs text-white">{item?.authorName}</p>
-                          )}
-                        </div>
-                      )}
-                    </div>
+                    {item?.authorName && block?.showAuthor && (
+                      <p className="text-xs text-white">{item?.authorName}</p>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
 
 
-              {/* <Link
-              href={item?.uri ?? "#"}
-              className="view-more-link flex gap-2 no-underline items-center capitalize text-md text-primary mt-auto"
-            >
-              <MoveUpRight size={20} /> read more
-            </Link> */}
             </div>
+
+
           </div>
         )}
         // keep dots inside (optional). If you want to move them out, set showBullets={false} and render below using `nav`.
