@@ -3,7 +3,8 @@
 import { print } from "graphql";
 // import { COMBINED_HEADER_QUERY } from "./queries";
 
-import HeaderClient from "./HeaderClient";
+// import HeaderClient from "./HeaderClient";
+import  HeaderClient  from "@/components/layout/header/HeaderClient";
 // import { nodes, type MenuNode } from "./types";
 import { fetchGraphQL } from "@/utils/fetchGraphQL";
 import { COMBINED_HEADER_QUERY } from "@/queries/headerQuery";
@@ -33,5 +34,6 @@ export default async function HeaderServer({ headerLogo, socials }: { headerLogo
   );
   const data = nodes(mainMenu);
   return <HeaderClient headerLogo={headerLogo} socials={socials} data={data} />;
+  
 }
 
