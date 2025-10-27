@@ -1,240 +1,464 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import * as React from "react";
 import Link from "next/link";
+
+import Image from "next/image";
+
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+
+
+
+import {
+  CircleCheckIcon,
+  CircleHelpIcon,
+  CircleIcon,
+  MenuIcon,
+} from "lucide-react";
+
 import {
   NavigationMenu,
-  NavigationMenuList,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuViewport,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-/* ---------- types ---------- */
-type Child = { label: string; href: string };
-type Item = { label: string; href: string; children?: Child[] };
-export type HeaderData = { links: Item[] };
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetClose,
+} from "@/components/ui/sheet";
 
-/* ---------- tiny collapsible with smooth height animation ---------- */
-function Collapse({
-  open,
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import { Button } from "@/components/ui/button";
+import { useFlyoutSide } from "@/hooks/useFlyoutSide";
+import { SocialIcon } from "../SocialIcon";
+
+/* -------------------- TYPES -------------------- */
+export type MenuNode = {
+  id: string;
+  label: string;
+  url?: string | null;
+  uri?: string | null;
+  path?: string | null;
+  target?: string | null;
+  cssClasses?: string[] | null;
+  childItems?: { edges?: { node: MenuNode }[] | null } | null;
+};
+
+export function nodes(
+  conn?: { edges?: { node: MenuNode }[] | null } | null
+): MenuNode[] {
+  return conn?.edges?.map((e) => e.node) ?? [];
+}
+
+/* -------------------- HELPERS -------------------- */
+function getHref(n: MenuNode): { href: string; external: boolean } {
+  // Prefer internal fields from WPGraphQL (uri/path)
+  const internal = n.uri || n.path;
+  if (internal) return { href: internal, external: false };
+  const abs = n.url ?? "#";
+  // Treat absolute http(s) as external if no uri/path given
+  const external = /^https?:\/\//i.test(abs);
+  return { href: abs, external };
+}
+
+function hasChildren(n: MenuNode) {
+  return nodes(n.childItems).length > 0;
+}
+
+function cx(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+
+/* -------------------- SHARED LIST ITEM (desktop cards) -------------------- */
+function CardItem({
+  title,
   children,
-  duration = 250,
-}: {
-  open: boolean;
-  children: React.ReactNode;
-  duration?: number;
+  href,
+  external,
+  target,
+  ...props
+}: React.ComponentPropsWithoutRef<"li"> & {
+  href: string;
+  external?: boolean;
+  target?: string | null;
 }) {
-  const innerRef = useRef<HTMLDivElement | null>(null);
-  const [maxHeight, setMaxHeight] = useState(0);
-
-  useEffect(() => {
-    const el = innerRef.current;
-    if (!el) return;
-    // measure on open and when children change
-    const h = el.scrollHeight;
-    setMaxHeight(h);
-  }, [open, children]);
+  const content = (
+    <div className="block rounded-md p-3 transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <div className="text-sm font-medium leading-none">{title}</div>
+      {children ? (
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          {children}
+        </p>
+      ) : null}
+    </div>
+  );
 
   return (
-    <div
-      style={{
-        maxHeight: open ? maxHeight : 0,
-        opacity: open ? 1 : 0,
-        overflow: "hidden",
-        transition: `max-height ${duration}ms cubic-bezier(0.2,0.8,0.2,1), opacity ${duration}ms ease`,
-      }}
-      aria-hidden={!open}
-    >
-      <div ref={innerRef}>{children}</div>
-    </div>
+    <li {...props}>
+      <NavigationMenuLink asChild>
+        {external ? (
+          <a
+            href={href}
+            target={target || "_blank"}
+            rel="noopener noreferrer"
+            className="no-underline"
+          >
+            {content}
+          </a>
+        ) : (
+          <Link href={href} className="no-underline">
+            {content}
+          </Link>
+        )}
+      </NavigationMenuLink>
+    </li>
   );
 }
 
-/* ---------- header ---------- */
-export default function HeaderClient({ data }: { data: HeaderData }) {
-  // Mobile drawer
-  const [open, setOpen] = useState(false);
-  // Single-open accordion in mobile
-  const [activeKey, setActiveKey] = useState<string | null>(null);
-
-  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
-  const closeRef = useRef<HTMLButtonElement | null>(null);
-
-  // ESC closes
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  // Focus management + reset
-  useEffect(() => {
-    if (open) closeRef.current?.focus();
-    else {
-      hamburgerRef.current?.focus();
-      setActiveKey(null);
-    }
-  }, [open]);
-
+/* -------------------- LINK WRAPPER -------------------- */
+function LinkOrA({
+  href,
+  external,
+  target,
+  className,
+  children,
+}: {
+  href: string;
+  external?: boolean;
+  target?: string | null;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  if (external) {
+    return (
+      <a
+        href={href}
+        target={target || "_blank"}
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
   return (
-    <header className="sticky top-0 z-[60] isolate overflow-visible">
-      <div className="bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/55 border-b overflow-visible">
-        <nav className="container mx-auto px-4 overflow-visible">
-          <div className="flex h-16 items-center justify-between overflow-visible">
-            <Link href="/" className="text-lg font-semibold tracking-tight">
-              <span className="inline-block rounded-lg bg-foreground/5 px-2 py-1">MySite</span>
-            </Link>
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
 
-            {/* ----- Desktop nav (smooth via shadcn motion classes) ----- */}
-            <div className="hidden md:block">
-              <NavigationMenu className="relative overflow-visible">
-                <NavigationMenuList className="flex items-center gap-1">
-                  {data.links.map((item) => (
-                    <NavigationMenuItem key={item.label}>
-                      {item.children?.length ? (
-                        <>
-                          <NavigationMenuTrigger>{item.label}</NavigationMenuTrigger>
-                          <NavigationMenuContent>
-                            {/* vertical list */}
-                            <ul className="w-[min(92vw,320px)] max-h-[70vh] overflow-auto p-1 flex flex-col gap-1">
-                              {item.children.map((c) => (
-                                <li key={c.href}>
-                                  <NavigationMenuLink asChild>
-                                    <Link
-                                      href={c.href}
-                                      className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                                    >
-                                      {c.label}
-                                    </Link>
-                                  </NavigationMenuLink>
-                                </li>
-                              ))}
-                            </ul>
-                          </NavigationMenuContent>
-                        </>
-                      ) : (
-                        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                          <Link href={item.href}>{item.label}</Link>
-                        </NavigationMenuLink>
-                      )}
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
+/* ======================================================================== */
+/*                                HEADER                                    */
+/* ======================================================================== */
 
-                {/* viewport handles alignment + uses smooth zoom/fade (see ui file tweak below) */}
-                <NavigationMenuViewport className="rounded-xl border bg-popover text-popover-foreground shadow-xl" />
-              </NavigationMenu>
-            </div>
+export default function HeaderClient({ data, headerLogo, socials }: any) {
+  return (
+    <header className="sticky top-0 z-50 py-3 border-b bg-white ">
+      {/* <div className="top-bar">
+        <ul className="mt-8 flex justify-start gap-6 sm:mt-0 sm:justify-end">
+          {socials.map((s : any) => (
+            <li key={s.label}>
+              <a
+                href={s.url}
+                rel="noreferrer"
+                target="_blank"
+                className="text-gray-700 hover:text-black transition hover:scale-110"
+                aria-label={s.label}
+                title={s.label}
+              >
+                <span className="sr-only">{s.label}</span>
+                <SocialIcon platform={s.label} />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div> */}
 
-            {/* ----- Mobile hamburger ----- */}
-            <button
-              ref={hamburgerRef}
-              className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border text-sm"
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
-              onClick={() => setOpen((v) => !v)}
-            >
-              <span className="relative block h-px w-4 bg-foreground after:absolute after:left-0 after:top-[-6px] after:block after:h-px after:w-4 after:bg-foreground before:absolute before:left-0 before:top-[6px] before:block before:h-px before:w-4 before:bg-foreground" />
-            </button>
+      <div className="container">
+        <div className="flex h-16 items-center justify-between gap-3">
+          {/* Logo */}
+          <Link href="/" className="font-semibold">
+            {headerLogo && (
+              <Image
+                src={headerLogo}
+                alt="Header Logo"
+                width={300}
+                height={120}
+                className="h-20 w-auto"
+              />
+            )}
+          </Link>
+
+          {/* Desktop nav */}
+          <div className="hidden xl:block">
+            <DesktopNav items={data} />
           </div>
-        </nav>
+
+          {/* Mobile hamburger */}
+          <div className="xl:hidden">
+            <MobileNav items={data} />
+          </div>
+        </div>
       </div>
-
-      {/* ----- Mobile drawer + animations ----- */}
-      {open && (
-        <>
-          {/* overlay: fade in */}
-          <button
-            className="fixed inset-0 z-[59] bg-black/30 md:hidden animate-in fade-in-0 duration-200"
-            aria-label="Close menu overlay"
-            onClick={() => setOpen(false)}
-          />
-
-          {/* slide-in panel */}
-          <div className="fixed inset-y-0 left-0 z-[60] w-[84vw] max-w-[360px] md:hidden animate-in slide-in-from-left-4 duration-250">
-            <div className="relative h-full bg-background border-r shadow-xl p-3 overflow-auto">
-              {/* Close button */}
-              <button
-                ref={closeRef}
-                onClick={() => setOpen(false)}
-                aria-label="Close menu"
-                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-md border text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-              >
-                ✕
-              </button>
-
-              {/* brand */}
-              <Link
-                href="/"
-                className="mb-6 inline-block text-base font-semibold"
-                onClick={() => setOpen(false)}
-              >
-                MySite
-              </Link>
-
-              {/* accordion list (only one open) with smooth height */}
-              <nav className="flex flex-col gap-1">
-                {data.links.map((item) => {
-                  const hasChildren = !!item.children?.length;
-                  const isOpen = activeKey === item.label;
-
-                  return (
-                    <div key={item.label} className="mb-1">
-                      <div className="flex items-center justify-between">
-                        <Link
-                          href={item.href}
-                          className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-                          onClick={() => setOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-
-                        {hasChildren && (
-                          <button
-                            className="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-md border text-xs transition-colors hover:bg-accent hover:text-accent-foreground"
-                            aria-expanded={isOpen}
-                            aria-controls={`sec-${item.label}`}
-                            onClick={() =>
-                              setActiveKey((prev) => (prev === item.label ? null : item.label))
-                            }
-                          >
-                            {isOpen ? "–" : "+"}
-                          </button>
-                        )}
-                      </div>
-
-                      {hasChildren && (
-                        <Collapse open={isOpen}>
-                          <ul
-                            id={`sec-${item.label}`}
-                            className="ml-3 mt-1 flex flex-col gap-1 border-l pl-3"
-                          >
-                            {item.children!.map((c) => (
-                              <li key={c.href}>
-                                <Link
-                                  href={c.href}
-                                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
-                                  onClick={() => setOpen(false)}
-                                >
-                                  {c.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </Collapse>
-                      )}
-                    </div>
-                  );
-                })}
-              </nav>
-            </div>
-          </div>
-        </>
-      )}
     </header>
+  );
+}
+
+
+function DesktopNav({ items }: { items: MenuNode[] }) {
+  return (
+    <NavigationMenu viewport={false}>
+      <NavigationMenuList>
+        {items.map((top) => {
+          const kids = nodes(top.childItems);
+          const { href, external } = getHref(top);
+
+          if (kids.length === 0) {
+            return (
+              <NavigationMenuItem key={top.id} className="hidden md:block">
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <LinkOrA href={href} external={external} target={top.target}>
+                    {top.label}
+                  </LinkOrA>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            );
+          }
+
+          return (
+            <NavigationMenuItem key={top.id} className="hidden md:block">
+              <NavigationMenuTrigger>{top.label}</NavigationMenuTrigger>
+
+              {/* Allow flyouts to escape */}
+              <NavigationMenuContent className="allow-overflow !overflow-visible z-50 bg-transparent p-0">
+                <ul className="grid w-[200px] gap-2 p-3">
+                  <li className="space-y-1">
+                    {kids.map((child) => {
+                      const gkids = nodes(child.childItems);
+                      const { href: chHref, external: chExt } = getHref(child);
+
+                      if (gkids.length === 0) {
+                        return (
+                          <NavigationMenuLink key={child.id} asChild>
+                            <LinkOrA
+                              href={chHref}
+                              external={chExt}
+                              target={child.target}
+                              className="block rounded px-2 py-1 hover:bg-muted"
+                            >
+                              {child.label}
+                            </LinkOrA>
+                          </NavigationMenuLink>
+                        );
+                      }
+
+                      // ---- level-2 WITH grandchildren: CSS flyout (auto-flip) ----
+                      const { bind, openLeft } = useFlyoutSide(220, 8);
+
+                      return (
+                        <div key={child.id} className="relative group/sub" {...bind}>
+                          {/* parent row */}
+                          {chHref ? (
+                            <LinkOrA
+                              href={chHref}
+                              external={chExt}
+                              target={child.target}
+                              className="flex items-center justify-between rounded px-2 py-1 hover:bg-muted"
+                            >
+                              <span className="text-sm">{child.label}</span>
+                              <span aria-hidden className="ml-2 text-xs">›</span>
+                            </LinkOrA>
+                          ) : (
+                            <button
+                              type="button"
+                              className="flex w-full items-center justify-between rounded px-2 py-1 text-left hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                            >
+                              <span className="text-sm">{child.label}</span>
+                              <span aria-hidden className="ml-2 text-xs">›</span>
+                            </button>
+                          )}
+
+                          {/* flyout panel */}
+                          <ul
+                            className={[
+                              "nav-flyout", // for the CSS override
+                              "invisible absolute top-0 z-50 min-w-[220px] rounded-md border bg-popover p-2 text-popover-foreground shadow-md opacity-0 transition",
+                              openLeft ? "right-full " : "left-full ",
+                              "group-hover/sub:visible group-hover/sub:opacity-100 group-focus-within/sub:visible group-focus-within/sub:opacity-100",
+                              "!overflow-visible",
+                            ].join(" ")}
+                          >
+                            {gkids.map((g) => {
+                              const { href: gHref, external: gExt } = getHref(g);
+                              return (
+                                <li key={g.id}>
+                                  <LinkOrA
+                                    href={gHref}
+                                    external={gExt}
+                                    target={g.target}
+                                    className="block rounded px-2 py-1 text-sm hover:bg-muted"
+                                  >
+                                    {g.label}
+                                  </LinkOrA>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          );
+        })}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+
+
+/* -------------------- MOBILE NAV (Sheet + Accordion) -------------------- */
+function MobileNav({ items }: { items: MenuNode[] }) {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon" aria-label="Open menu">
+          <MenuIcon className="h-5 w-5" />
+        </Button>
+      </SheetTrigger>
+
+      <SheetContent
+        side="left"
+        className="w-[86vw] max-w-[380px] p-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:slide-in-from-left data-[state=closed]:slide-out-to-left"
+      >
+        <SheetHeader className="flex flex-row items-center justify-between border-b px-4 py-3">
+          <SheetTitle className="text-base">Menu</SheetTitle>
+          <SheetDescription className="sr-only">Site navigation</SheetDescription>
+          <SheetClose asChild>
+            <Button variant="ghost" size="icon" aria-label="Close menu">
+              {/* add X icon if you like */}
+              {/* <XIcon className="h-5 w-5" /> */}
+            </Button>
+          </SheetClose>
+        </SheetHeader>
+
+        <nav className="max-h-[calc(100dvh-56px)] overflow-y-auto px-2 py-2">
+          <Accordion type="single" collapsible className="w-full">
+            {items.map((top) => {
+              const topKids = nodes(top.childItems);
+              const { href, external } = getHref(top);
+
+              // Leaf → render as plain link row
+              if (topKids.length === 0) {
+                return (
+                  <div key={top.id} className="border-b">
+                    <LinkOrA
+                      href={href}
+                      external={external}
+                      target={top.target}
+                      className="block px-3 py-3 text-base hover:bg-muted"
+                    >
+                      {top.label}
+                    </LinkOrA>
+                  </div>
+                );
+              }
+
+              // Branch → Accordion + nested content
+              return (
+                <AccordionItem key={top.id} value={top.id} className="border-b">
+                  <AccordionTrigger className="px-2 py-3 text-base">
+                    {top.label}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-2 pb-3">
+                    {/* If the top itself has a link, show a “View all” */}
+                    {href && (
+                      <div className="mb-2">
+                        <LinkOrA
+                          href={href}
+                          external={external}
+                          target={top.target}
+                          className="block rounded px-2 py-2 text-sm font-medium hover:bg-accent"
+                        >
+                          View all {top.label}
+                        </LinkOrA>
+                      </div>
+                    )}
+
+                    {/* Level-2 list / nested accordions for grandchildren */}
+                    <Accordion type="single" collapsible className="w-full">
+                      {topKids.map((child) => {
+                        const gkids = nodes(child.childItems);
+                        const { href: chHref, external: chExt } = getHref(child);
+
+                        if (gkids.length === 0) {
+                          return (
+                            <div key={child.id}>
+                              <LinkOrA
+                                href={chHref}
+                                external={chExt}
+                                target={child.target}
+                                className="block rounded px-2 py-2 text-sm hover:bg-muted"
+                              >
+                                {child.label}
+                              </LinkOrA>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <AccordionItem key={child.id} value={child.id}>
+                            <AccordionTrigger className="rounded px-2 py-2 text-sm hover:bg-muted">
+                              {child.label}
+                            </AccordionTrigger>
+                            <AccordionContent className="pl-2">
+                              <ul className="space-y-1">
+                                {gkids.map((g) => {
+                                  const { href: gHref, external: gExt } = getHref(g);
+                                  return (
+                                    <li key={g.id}>
+                                      <LinkOrA
+                                        href={gHref}
+                                        external={gExt}
+                                        target={g.target}
+                                        className="block rounded px-2 py-2 text-sm hover:bg-accent"
+                                      >
+                                        {g.label}
+                                      </LinkOrA>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </nav>
+      </SheetContent>
+    </Sheet>
   );
 }
