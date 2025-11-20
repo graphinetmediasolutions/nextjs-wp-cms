@@ -185,18 +185,18 @@ export default function BaseCarousel<TItem>({
   const dotsArgs = { goTo, selectedIndex, scrollSnaps };
 
 
-   useEffect(() => {
-      // Debug
-      console.log("get into");
+  //  useEffect(() => {
+  //     // Debug
+  //     console.log("get into");
 
-      console.log(autoplayRef)
+  //     console.log(autoplayRef)
   
-      if (!autoplayRef.current) return;
+  //     if (!autoplayRef.current) return;
   
-      if (pauseAutoplay) {
-        autoplayRef.current.stop();
-      } 
-    }, []);
+  //     if (pauseAutoplay) {
+  //       autoplayRef.current.stop();
+  //     } 
+  //   }, []);
 
   return (
     <div className="relative not-prose">

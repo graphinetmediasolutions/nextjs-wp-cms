@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 
 const testimonials = () => {
-    const [pause, setPause] = React.useState(false);
+
     return (
         <>
             {/* <button
