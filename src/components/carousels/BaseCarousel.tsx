@@ -60,6 +60,8 @@ type BaseCarouselProps<TItem> = {
 
   wheelGestures?: boolean;
   duration?: number;
+  pauseAutoplay?:boolean;
+  
 
   /** Expose nav/state to parent so arrows can be rendered anywhere */
   exposeNav?: (nav: ExposedNav) => void;
@@ -82,6 +84,7 @@ export default function BaseCarousel<TItem>({
   duration = 50,
   breakpoints,
   exposeNav,
+   pauseAutoplay=false
 }: BaseCarouselProps<TItem>) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -181,6 +184,20 @@ export default function BaseCarousel<TItem>({
   };
   const dotsArgs = { goTo, selectedIndex, scrollSnaps };
 
+
+   useEffect(() => {
+      // Debug
+      console.log("get into");
+
+      console.log(autoplayRef)
+  
+      if (!autoplayRef.current) return;
+  
+      if (pauseAutoplay) {
+        autoplayRef.current.stop();
+      } 
+    }, []);
+
   return (
     <div className="relative not-prose">
       <Carousel
@@ -203,6 +220,7 @@ export default function BaseCarousel<TItem>({
               "(min-width: 1024px)": { slidesToScroll: slidesToScroll.lg },
             },
         }}
+        
         plugins={plugins}
       >
         <CarouselContent>

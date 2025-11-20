@@ -398,4 +398,8 @@
   overflow: visible !important;
 }
 
+/* [data-slot="dialog-close"] {
+  display: none !important;
+}
+ */
 

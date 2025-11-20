@@ -220,6 +220,51 @@ export const NodeByUriQuery = gql`
             }
           }
         }
+
+
+
+
+
+
+       ... on PageBuilderPageLayoutTestimonialBlockLayout{
+        heading
+        headingTag
+        headingPosition
+        subheading
+        subheadingPosition
+        description
+        layout
+        displayPerRow
+        showPost
+        isSlider
+        autoplay
+        showArrow
+        showBullets
+        sliderPerScroll
+        sliderSpeed
+        loopForSlider
+        actionButtonLabel
+        sectionWidth
+        cssClass
+        backgroundColor
+        backgroundImage{
+          node{
+            sourceUrl
+          }
+        }
+        testimonials{
+          testimonialName
+          testimonialRole
+          testimonialQuote
+          testimonialImage{
+            node{
+              sourceUrl
+              altText
+            }
+          }
+          testimonialVideoUrl
+        }
+      }
           
 
 
