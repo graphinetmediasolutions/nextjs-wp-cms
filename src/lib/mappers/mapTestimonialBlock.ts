@@ -50,6 +50,7 @@ export type WPTestimonialBlockCMS = {
   loopForSlider?: boolean | null;
 
   actionButtonLabel?: string | null;
+  actionButtonUrl?: string | null;
   sectionWidth?: string | string[] | null;
   cssClass?: string | null;
   backgroundColor?: string | null;
@@ -98,6 +99,7 @@ export type TestimonialBlockData = {
 
   sectionWidth?: string | string[] | null;
   actionButtonText?: string;
+  actionButtonUrl?:string;
 
   items: TestimonialItem[];
 };
@@ -174,6 +176,7 @@ export function mapTestimonialBlock(
 
     sectionWidth: cmsBlock.sectionWidth ?? "Box Width",
     actionButtonText: cmsBlock.actionButtonLabel ?? "",
+    actionButtonUrl : cmsBlock?.actionButtonUrl ?? "",
 
     items,
   };

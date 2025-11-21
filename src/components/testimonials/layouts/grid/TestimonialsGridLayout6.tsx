@@ -12,6 +12,7 @@ import Image from "next/image";
 import { perViewToGridCols } from "@/hooks/useCollectionLayout";
 import SafeRichText from "@/components/safeHtml/SafeRichText";
 import VideoDialog from "@/components/VideoDialog";
+import Link from "next/link";
 
 const TestimonialsGridLayout6 = ({ block }: { block: TestimonialBlockData }) => {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
@@ -73,29 +74,29 @@ const TestimonialsGridLayout6 = ({ block }: { block: TestimonialBlockData }) => 
 
 
 
-            <div key={index} className="text-sm  border mt-28 border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5">
+            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="text-sm  border mt-28 border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5">
               <div className="flex justify-end">
-                  {item?.videoUrl && (
-                    <button
-                      type="button"
-                      onClick={() => handleOpenVideo(item.videoUrl)}
-                      className=" flex items-center justify-center cursor-pointer"
-                    >
-                      <div className="bg-white/70 backdrop-blur rounded-full p-4">
-                        <svg
-                          width="40"
-                          height="40"
-                          fill="black"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </div>
-                    </button>
-                  )}
-                </div>
+                {item?.videoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenVideo(item.videoUrl)}
+                    className=" flex items-center justify-center cursor-pointer"
+                  >
+                    <div className="bg-white/70 backdrop-blur rounded-full p-4">
+                      <svg
+                        width="40"
+                        height="40"
+                        fill="black"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </button>
+                )}
+              </div>
               <div className="flex flex-col items-center px-5 py-4 relative ">
-                
+
 
                 <div className="absolute mx-2 h-24 w-24 shrink-0 -top-30">
                   {item?.image && (
@@ -157,6 +158,16 @@ const TestimonialsGridLayout6 = ({ block }: { block: TestimonialBlockData }) => 
 
           ))}
       </div>
+      {block?.actionButtonText && block?.actionButtonUrl && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block?.actionButtonUrl ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block?.actionButtonText}
+          </Link>
+        </div>
+      )}
     </>
   );
 };

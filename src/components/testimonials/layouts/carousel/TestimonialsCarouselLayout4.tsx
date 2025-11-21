@@ -147,7 +147,13 @@ export default function TestimonialsCarouselLayout4({ block }: { block: Testimon
         loop={loop}
         showArrow={false}
         showBullets={IsShowBullets}
+        getKey={(item, index) =>
 
+          `${(item.name || "anon")
+            .toLowerCase()
+            .replace(/\s+/g, "")}-${index}`
+        }
+        pauseAutoplay={open}
         breakpoints={{
           "(max-width: 640px)": { slidesToScroll: 1 },
           "(min-width: 641px) and (max-width: 1023px)": { slidesToScroll: 1 },
@@ -236,16 +242,18 @@ export default function TestimonialsCarouselLayout4({ block }: { block: Testimon
       />
 
 
-      {/* {block.actionButtonText && (
+
+      {block?.actionButtonText && block?.actionButtonUrl && (
         <div className="mt-8 text-center">
           <Link
-            href={block.parentPages?.[0]?.uri ?? "#"}
+            href={block?.actionButtonUrl ?? "#"}
             className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
           >
-            {block.actionButtonText}
+            {block?.actionButtonText}
           </Link>
         </div>
-      )} */}
+      )}
+
     </>
   );
 }

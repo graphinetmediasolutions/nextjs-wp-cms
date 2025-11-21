@@ -9,7 +9,8 @@ export const registry: Record<string, React.ComponentType<any>> = {
   PageBuilderPageLayoutTextBlockLayout : TextBlock,
   PageBuilderPageLayoutBlogBlockLayout :BlogBlock,
   PageBuilderPageLayoutListingBlockLayout: ListingBlock,
-   PageBuilderPageLayoutTestimonialBlockLayout : TestimonialsBlock
+   PageBuilderPageLayoutTestimonialBlockLayout : TestimonialsBlock,
+  //  PageBuilderPageLayoutTeamBlockLayout : 
   // ...one entry per section
 };
 

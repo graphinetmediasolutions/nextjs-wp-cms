@@ -12,6 +12,7 @@ import Image from "next/image";
 import { perViewToGridCols } from "@/hooks/useCollectionLayout";
 import SafeRichText from "@/components/safeHtml/SafeRichText";
 import VideoDialog from "@/components/VideoDialog";
+import Link from "next/link";
 
 const TestimonialsGridLayout3 = ({ block }: { block: TestimonialBlockData }) => {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
@@ -77,7 +78,7 @@ const TestimonialsGridLayout3 = ({ block }: { block: TestimonialBlockData }) => 
 
 
 
-            <div className="" key={index}>
+            <div className="" key={item?.name?.replace(/\s+/g, "") ?? index}>
 
               <SafeRichText
                 html={item?.quote}
@@ -139,6 +140,16 @@ const TestimonialsGridLayout3 = ({ block }: { block: TestimonialBlockData }) => 
 
           ))}
       </div>
+       {block?.actionButtonText && block?.actionButtonUrl && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block?.actionButtonUrl ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block?.actionButtonText}
+          </Link>
+        </div>
+      )}
     </>
   );
 };

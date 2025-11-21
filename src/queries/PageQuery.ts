@@ -181,6 +181,7 @@ export const NodeByUriQuery = gql`
           sliderSpeed
           loopForSlider
           actionButtonLabel
+          actionButtonUrl
           showDate
           showAuthor
           backgroundColor
@@ -244,6 +245,7 @@ export const NodeByUriQuery = gql`
         sliderSpeed
         loopForSlider
         actionButtonLabel
+        actionButtonUrl
         sectionWidth
         cssClass
         backgroundColor
@@ -265,6 +267,55 @@ export const NodeByUriQuery = gql`
           testimonialVideoUrl
         }
       }
+
+
+
+
+      ... on PageBuilderPageLayoutTeamBlockLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          subheadingPosition
+          description
+          layout
+          displayPerRow
+          showPost
+          isSlider
+          autoplay
+          showArrow
+          showBullets
+          sliderPerScroll
+          sliderSpeed
+          loopForSlider
+          actionButtonLabel
+          actionButtonUrl
+          sectionWidth
+          cssClass
+          backgroundColor
+          backgroundImage{
+            node{
+              sourceUrl
+            }
+          }
+          teamMembers{
+            name
+            designation
+            shortBio
+            detailBio
+            photo{
+              node{
+                sourceUrl
+              }
+            }
+            socialLinks{
+              facebookLinks
+              instagarmLinks
+              twitterLinks
+              linkedinLinks
+            }
+          }
+        }
           
 
 

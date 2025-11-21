@@ -231,10 +231,10 @@ export default function ListingCarouselLayout4({ block }: { block: ListingBlockD
           ))}
         </div>
       )} */}
-      {block.actionButtonText && (
+        {block.actionButtonText && block?.actionButtonUrl && (
         <div className="mt-8 text-center">
           <Link
-            href={block.parentPages?.[0]?.uri ?? "#"}
+            href={block?.actionButtonUrl ?? "#"}
             className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
           >
             {block.actionButtonText}

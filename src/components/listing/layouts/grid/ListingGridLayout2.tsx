@@ -18,22 +18,22 @@ export default function ListingGridLayout2({ block }: { block: ListingBlockData 
 
 
       <div className="headings-wrapper mb-10">
-       {block?.subheading && (
-                 <SafeHeading
-                 position={(block?.subheadingPosition?.[0] as HeadingPosition) ?? "Left"}
-                   className="text-sm font-semibold   mb-3"
-                   as="p"
-                   html={block.subheading}
-                 />
-               )}
-               {block?.heading && (
-                 <SafeHeading
-                    position={(block?.headingPosition?.[0] as HeadingPosition) ?? "Left"}
-                   html={block.heading}
-                  as={block?.headingTag?.[0] as HeadingTag ?? "h2"}
-                   className="mb-4 md:mb-0 text-4xl md:text-5xl font-bold leading-snug"
-                 />
-               )}
+        {block?.subheading && (
+          <SafeHeading
+            position={(block?.subheadingPosition?.[0] as HeadingPosition) ?? "Left"}
+            className="text-sm font-semibold   mb-3"
+            as="p"
+            html={block.subheading}
+          />
+        )}
+        {block?.heading && (
+          <SafeHeading
+            position={(block?.headingPosition?.[0] as HeadingPosition) ?? "Left"}
+            html={block.heading}
+            as={block?.headingTag?.[0] as HeadingTag ?? "h2"}
+            className="mb-4 md:mb-0 text-4xl md:text-5xl font-bold leading-snug"
+          />
+        )}
       </div>
       <div className={`grid gap-6 ${gridCols}`}>
         {items.map((item, i) => (
@@ -102,10 +102,10 @@ export default function ListingGridLayout2({ block }: { block: ListingBlockData 
 
         ))}
       </div>
-      {block.actionButtonText && (
+      {block.actionButtonText && block?.actionButtonUrl && (
         <div className="mt-8 text-center">
           <Link
-            href={block.parentPages?.[0]?.uri ?? "#"}
+            href={block?.actionButtonUrl ?? "#"}
             className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
           >
             {block.actionButtonText}

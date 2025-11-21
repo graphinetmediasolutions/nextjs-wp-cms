@@ -127,7 +127,7 @@ export default function TestimonialsCarouselLayout3({ block }: { block: Testimon
             >
               <ChevronLeft />
             </button>
-           
+
           </div>
         )}
 
@@ -142,6 +142,14 @@ export default function TestimonialsCarouselLayout3({ block }: { block: Testimon
           loop={loop}
           showArrow={false}
           showBullets={IsShowBullets}
+
+          getKey={(item, index) =>
+
+            `${(item.name || "anon")
+              .toLowerCase()
+              .replace(/\s+/g, "")}-${index}`
+          }
+          pauseAutoplay={open}
 
           breakpoints={{
             "(max-width: 640px)": { slidesToScroll: 1 },
@@ -226,9 +234,9 @@ export default function TestimonialsCarouselLayout3({ block }: { block: Testimon
           )}
         />
 
-         {showArrows && nav?.isScrollable && (
+        {showArrows && nav?.isScrollable && (
           <div className="flex items-center   gap-3 mt-6">
-           
+
             <button
               onClick={() => nav.goNext()}
               disabled={!nav.canNext}
@@ -243,6 +251,17 @@ export default function TestimonialsCarouselLayout3({ block }: { block: Testimon
       </div>
 
 
+
+      {block?.actionButtonText && block?.actionButtonUrl && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block?.actionButtonUrl ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block?.actionButtonText}
+          </Link>
+        </div>
+      )}
 
 
     </>

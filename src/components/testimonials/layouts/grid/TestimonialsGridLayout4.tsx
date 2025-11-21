@@ -12,6 +12,7 @@ import Image from "next/image";
 import { perViewToGridCols } from "@/hooks/useCollectionLayout";
 import SafeRichText from "@/components/safeHtml/SafeRichText";
 import VideoDialog from "@/components/VideoDialog";
+import Link from "next/link";
 
 const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
@@ -63,7 +64,7 @@ const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => 
           className="mb-4 text-4xl md:text-5xl font-bold leading-snug"
         />
       )}
-      
+
 
 
       {/* Grid of testimonials */}
@@ -75,7 +76,7 @@ const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => 
 
 
 
-            <div key={index} className="flex flex-col  mx-4 my-6 shadow-lg">
+            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="flex flex-col  mx-4 my-6 shadow-lg">
               <div className="px-4 py-12 rounded-t-lg sm:px-8 md:px-12 dark:bg-gray-50">
                 <p className="relative px-6 py-1 text-lg italic text-center dark:text-gray-800">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" className="w-8 h-8 dark:text-violet-600">
@@ -141,6 +142,16 @@ const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => 
 
           ))}
       </div>
+      {block?.actionButtonText && block?.actionButtonUrl && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block?.actionButtonUrl ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block?.actionButtonText}
+          </Link>
+        </div>
+      )}
     </>
   );
 };

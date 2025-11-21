@@ -9,8 +9,8 @@ const GRID = {
     "Layout 4": dynamic(() => import("./layouts/grid/TestimonialsGridLayout4"), { ssr: true }),
     "Layout 5": dynamic(() => import("./layouts/grid/TestimonialsGridLayout5"), { ssr: true }),
     "Layout 6": dynamic(() => import("./layouts/grid/TestimonialsGridLayout6"), { ssr: true }),
-    // "Layout 7": dynamic(() => import("./layouts/grid/ListingGridLayout7"), { ssr: true }),
-    // "Layout 8": dynamic(() => import("./layouts/grid/ListingGridLayout8"), { ssr: true }),
+    "Layout 7": dynamic(() => import("./layouts/grid/TestimonialsGridLayout7"), { ssr: true }),
+    "Layout 8": dynamic(() => import("./layouts/grid/TestimonialsGridLayout8"), { ssr: true }),
 } as const;
 
 const SLIDER = {
@@ -20,8 +20,8 @@ const SLIDER = {
     "Layout 4": dynamic(() => import("./layouts/carousel/TestimonialsCarouselLayout4"), { ssr: true }),
     "Layout 5": dynamic(() => import("./layouts/carousel/TestimonialsCarouselLayout5"), { ssr: true }),
     "Layout 6": dynamic(() => import("./layouts/carousel/TestimonialsCarouselLayout6"), { ssr: true }),
-    // "Layout 7": dynamic(() => import("./layouts/carousel/ListingCarouselLayout7"), { ssr: true }),
-    // "Layout 8": dynamic(() => import("./layouts/carousel/ListingCarouselLayout8"), { ssr: true }),
+    "Layout 7": dynamic(() => import("./layouts/carousel/TestimonialsCarouselLayout7"), { ssr: true }),
+    "Layout 8": dynamic(() => import("./layouts/carousel/TestimonialsCarouselLayout8"), { ssr: true }),
 } as const;
 
 type GridKeys = keyof typeof GRID;

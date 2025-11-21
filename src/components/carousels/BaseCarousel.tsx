@@ -60,8 +60,9 @@ type BaseCarouselProps<TItem> = {
 
   wheelGestures?: boolean;
   duration?: number;
-  pauseAutoplay?:boolean;
-  
+  pauseAutoplay?: boolean;
+  getKey?: (item: TItem, index: number) => string | number;
+
 
   /** Expose nav/state to parent so arrows can be rendered anywhere */
   exposeNav?: (nav: ExposedNav) => void;
@@ -71,6 +72,7 @@ type BaseCarouselProps<TItem> = {
 export default function BaseCarousel<TItem>({
   items,
   renderItem,
+  getKey,
   itemBasis = "basis-full", // ✅ default
   className,
   slidesToScroll,
@@ -84,7 +86,7 @@ export default function BaseCarousel<TItem>({
   duration = 50,
   breakpoints,
   exposeNav,
-   pauseAutoplay=false
+  pauseAutoplay = false
 }: BaseCarouselProps<TItem>) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -92,17 +94,18 @@ export default function BaseCarousel<TItem>({
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
+  const autoplayRef = useRef<ReturnType<typeof Autoplay> | null>(null);
 
-  const autoplayRef = useRef(
-    typeof autoplayDelay === "number"
-      ? Autoplay({
-          delay: autoplayDelay,
-          stopOnInteraction: false,
-          stopOnMouseEnter: false,
-          jump: false,
-        })
-      : null
-  );
+  // const autoplayRef = useRef(
+  //   typeof autoplayDelay === "number"
+  //     ? Autoplay({
+  //       delay: autoplayDelay,
+  //       stopOnInteraction: false,
+  //       stopOnMouseEnter: false,
+  //       jump: false,
+  //     })
+  //     : null
+  // );
 
   const bumpAutoplay = useCallback(() => {
     autoplayRef.current?.reset?.();
@@ -162,16 +165,33 @@ export default function BaseCarousel<TItem>({
       try {
         api.off("select", update);
         api.off("reInit", update);
-      } catch {}
+      } catch { }
     };
   }, [api, exposeNav, goPrev, goNext, goTo]);
 
   const plugins = useMemo(() => {
     const list: any[] = [];
-    if (autoplayRef.current) list.push(autoplayRef.current);
+
+    // Only use autoplay if not paused and delay is valid
+    if (!pauseAutoplay && typeof autoplayDelay === "number") {
+      if (!autoplayRef.current) {
+        autoplayRef.current = Autoplay({
+          delay: autoplayDelay,
+          stopOnInteraction: false,
+          stopOnMouseEnter: false,
+          jump: false,
+        });
+      } else {
+        autoplayRef.current.options.delay = autoplayDelay;
+      }
+
+      list.push(autoplayRef.current);
+    }
+
     if (wheelGestures) list.push(WheelGestures({ forceWheelAxis: "x" }));
+
     return list;
-  }, [wheelGestures]);
+  }, [wheelGestures, pauseAutoplay, autoplayDelay]);
 
   const arrowsArgs = {
     goPrev,
@@ -184,19 +204,6 @@ export default function BaseCarousel<TItem>({
   };
   const dotsArgs = { goTo, selectedIndex, scrollSnaps };
 
-
-  //  useEffect(() => {
-  //     // Debug
-  //     console.log("get into");
-
-  //     console.log(autoplayRef)
-  
-  //     if (!autoplayRef.current) return;
-  
-  //     if (pauseAutoplay) {
-  //       autoplayRef.current.stop();
-  //     } 
-  //   }, []);
 
   return (
     <div className="relative not-prose">
@@ -220,16 +227,22 @@ export default function BaseCarousel<TItem>({
               "(min-width: 1024px)": { slidesToScroll: slidesToScroll.lg },
             },
         }}
-        
+
         plugins={plugins}
       >
         <CarouselContent>
           {items.map((item: any, i) => {
             const basis =
               typeof itemBasis === "function" ? itemBasis(i) : itemBasis; // ✅ resolve per slide
+            const fallbackKey =
+              (item as any)?.id ??
+              (item as any)?.slug ??
+              i;
+
+            const key = getKey ? getKey(item, i) : fallbackKey;
             return (
               <CarouselItem
-                key={item?.id ?? item?.slug ?? i}
+                key={key}
                 className={basis}
               >
                 {renderItem(item, i)}

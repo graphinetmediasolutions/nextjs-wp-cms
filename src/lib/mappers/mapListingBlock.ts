@@ -50,6 +50,7 @@ type WPListingBlockCMS = {
 
   pagination?: boolean | null;
   actionButtonLabel?: string | null;
+  actionButtonUrl?: string | null;
   sectionWidth?: string | string[] | null;
 
   childPages?: WPChildPage[] | null;
@@ -106,6 +107,8 @@ export type ListingBlockData = {
 
   items: ListingItem[];
   actionButtonText?: string;
+  actionButtonUrl?: string;
+
 
   parentPages?: ParentPage[];
 };
@@ -180,6 +183,7 @@ export function mapListingBlock(cmsBlock: WPListingBlockCMS): ListingBlockData {
 
     pagination: Boolean(cmsBlock.pagination),
     actionButtonText: cmsBlock.actionButtonLabel ?? "",
+     actionButtonUrl : cmsBlock?.actionButtonUrl ?? "",
     sectionWidth: cmsBlock.sectionWidth ?? "Box Width",
 
     items: listingItems,

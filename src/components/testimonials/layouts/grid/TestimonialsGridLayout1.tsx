@@ -14,6 +14,7 @@ import SafeRichText from "@/components/safeHtml/SafeRichText";
 import VideoPlayer from "@/components/VideoPlayer";
 import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import VideoDialog from "@/components/VideoDialog";
+import Link from "next/link";
 
 const TestimonialsGridLayout1 = ({ block }: { block: TestimonialBlockData }) => {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
@@ -69,7 +70,7 @@ const TestimonialsGridLayout1 = ({ block }: { block: TestimonialBlockData }) => 
         {Array.isArray(items) &&
           items.length > 0 &&
           items.map((item, index) => (
-            <div key={index} className="lg:-mx-6 lg:flex lg:items-center">
+            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="lg:-mx-6 lg:flex lg:items-center">
               {/* LEFT: image + play button overlay */}
               <div className="relative lg:w-1/2 lg:mx-6 w-full h-96 lg:h-[36rem]">
                 {item?.image && (
@@ -139,6 +140,18 @@ const TestimonialsGridLayout1 = ({ block }: { block: TestimonialBlockData }) => 
             </div>
           ))}
       </div>
+
+       {block?.actionButtonText && block?.actionButtonUrl && (
+        <div className="mt-8 text-center">
+          <Link
+            href={block?.actionButtonUrl ?? "#"}
+            className="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
+          >
+            {block?.actionButtonText}
+          </Link>
+        </div>
+      )}
+      
     </>
   );
 };
