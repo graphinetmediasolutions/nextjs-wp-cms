@@ -78,7 +78,7 @@ export default function ListingGridLayout5({ block }: { block: ListingBlockData 
               {item?.image && (
                 <Image
                   src={item.image}
-                  alt={item.title ?? "Blog image"}
+                  alt={item?.alt ?? ""}
                   fill
                   className="h-full w-full rounded-[20px] object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"

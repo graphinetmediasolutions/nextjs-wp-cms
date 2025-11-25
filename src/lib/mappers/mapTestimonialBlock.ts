@@ -1,10 +1,10 @@
 
+export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 type WPTestimonialImageNode = {
   sourceUrl?: string | null;
+ altText?: string | null;
 };
-export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-
 type WPTestimonialImage = {
   node?: WPTestimonialImageNode | null;
   
@@ -12,6 +12,7 @@ type WPTestimonialImage = {
 
 type WPBackgroundImageNode = {
   sourceUrl?: string | null;
+  altText?: string | null;
 };
 
 type WPBackgroundImage = {
@@ -23,7 +24,7 @@ type WPTestimonial = {
   testimonialRole?: string | null;
   testimonialQuote?: string | null;
   testimonialImage?: WPTestimonialImage | null;
-  imageAlt?: string | null;
+  // imageAlt?: WPTestimonialImage | null;
   testimonialVideoUrl?: string | null;
 };
 
@@ -83,6 +84,7 @@ export type TestimonialBlockData = {
   cssClass?: string;
   backgroundColor?: string;
   backgroundImage?: string;
+  backgroundImageAlt?: string;
 
   isSlider: boolean;
   layout: string;
@@ -131,7 +133,7 @@ export function mapTestimonialBlock(
       quote: t.testimonialQuote ?? "",
       image: t.testimonialImage?.node?.sourceUrl ?? undefined,
       videoUrl: t.testimonialVideoUrl ?? undefined,
-     imageAlt: t.imageAlt ?? ""
+     imageAlt:t.testimonialImage?.node?.altText ?? ""
     }))
     // keep only items that at least have a name or quote
     .filter((item) => item.name || item.quote);
@@ -158,8 +160,8 @@ export function mapTestimonialBlock(
 
     cssClass: cmsBlock.cssClass ?? "",
     backgroundColor: cmsBlock.backgroundColor ?? "transparent",
-    backgroundImage,
-
+    backgroundImage:cmsBlock?.backgroundImage?.node?.sourceUrl ?? "" ,
+    backgroundImageAlt: cmsBlock?.backgroundImage?.node?.altText ?? "",
     isSlider: Boolean(cmsBlock.isSlider),
     loopForSlider: Boolean(cmsBlock.loopForSlider),
     layout,

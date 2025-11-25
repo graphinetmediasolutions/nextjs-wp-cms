@@ -75,7 +75,7 @@ const TestimonialsGridLayout6 = ({ block }: { block: TestimonialBlockData }) => 
 
 
             <div key={item?.name?.replace(/\s+/g, "") ?? index} className="text-sm  border mt-28 border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5">
-              <div className="flex justify-end">
+              <div className="flex justify-end w-[70] h-[70] ml-auto">
                 {item?.videoUrl && (
                   <button
                     type="button"

@@ -190,6 +190,7 @@ export const NodeByUriQuery = gql`
           backgroundImage{
             node{
               sourceUrl
+              altText
             }
           }
 
@@ -252,6 +253,7 @@ export const NodeByUriQuery = gql`
         backgroundImage{
           node{
             sourceUrl
+            altText
           }
         }
         testimonials{
@@ -303,6 +305,7 @@ export const NodeByUriQuery = gql`
             designation
             shortBio
             detailBio
+            videoUrl
             photo{
               node{
                 sourceUrl

@@ -139,7 +139,7 @@ export default function TestimonialsCarouselLayout6({ block }: { block: Testimon
 
       <BaseCarousel<TestimonialItem>
         items={items}
-        className="testimonial-layout-carousel-one"
+        className="testimonial-layout-carousel-six"
         itemBasis={itemBasisResponsive({ base: 1, sm: 2, md: 2, lg: displayPerRow })}
         // itemBasis="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/3"
         slidesToScroll={slidesToScroll}
@@ -163,8 +163,8 @@ export default function TestimonialsCarouselLayout6({ block }: { block: Testimon
         exposeNav={setNav}
         renderItem={(item, index) => (
 
-          <div key={index} className="text-sm  border mt-28 border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5">
-            <div className="flex justify-end">
+          <div key={index} className="text-sm h-full border mt-28 border-gray-200 pb-6 rounded-lg bg-white shadow-[0px_4px_15px_0px] shadow-black/5">
+            <div className="flex justify-end w-[70] h-[70] ml-auto">
               {item?.videoUrl && (
                 <button
                   type="button"

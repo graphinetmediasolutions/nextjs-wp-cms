@@ -136,7 +136,7 @@ export default function ListingCarouselLayout3({ block }: { block: ListingBlockD
               >
                 <Image
                   src={item.image}
-                  alt={item.title ?? "Blog image"}
+                  alt={item?.alt ?? ""}
                   fill
                   className="object-cover rounded-lg"
                 />

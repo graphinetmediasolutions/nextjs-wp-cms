@@ -140,7 +140,7 @@ export default function BlogCarouselLayout1({ block }: { block: BlogBlockData })
                 >
                   <Image
                     src={item.image}
-                    alt={item.title ?? "Blog image"}
+                    alt={item?.alt ?? ""}
                     fill
                     className="object-cover rounded-lg"
                   />

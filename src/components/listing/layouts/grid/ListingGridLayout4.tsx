@@ -54,7 +54,7 @@ export default function ListingGridLayout4({ block }: { block: ListingBlockData 
 
                 <Image
                   src={item.image}
-                  alt={item.title ?? "Blog image"}
+                  alt={item?.alt ?? ""}
                   fill
                   className="object-cover block w-full aspect-[16/9] no-underline absolute inset-0 h-full   opacity-75 transition-opacity duration-300 group-hover:opacity-50"
                 />

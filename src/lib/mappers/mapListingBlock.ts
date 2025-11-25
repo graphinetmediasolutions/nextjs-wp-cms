@@ -6,6 +6,17 @@ type WPAuthor = { node?: WPUserNode | null };
 
 export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
+
+
+type WPBackgroundImageNode = {
+  sourceUrl?: string | null;
+  altText?: string | null;
+};
+
+type WPBackgroundImage = {
+  node?: WPBackgroundImageNode | null;
+};
+
 type WPChildPage = {
   slug?: string | null;
   title?: string | null;
@@ -13,7 +24,10 @@ type WPChildPage = {
   date?: string | null;
   excerpt?: string | null;
   author?: WPAuthor | null;
-  featuredImage?: { node?: { sourceUrl?: string | null; altText?: string | null } | null } | null;
+  featuredImage?: { node?: { 
+    sourceUrl?: string | null; 
+    altText?: string | null } | null 
+  } | null;
 };
 
 type WPParentPageNode = {
@@ -23,7 +37,7 @@ type WPParentPageNode = {
 
 type WPEdge<T> = { node?: T | null } | null;
 
-type WPListingBlockCMS = {
+export type WPListingBlockCMS = {
   heading?: string | null;
   subheading?: string | null;
   headingPosition?:string[];
@@ -31,7 +45,7 @@ type WPListingBlockCMS = {
   headingTag?: string;
   cssClass?: string | null;
   backgroundColor?: string | null;
-
+backgroundImage?: WPBackgroundImage | null;
   isSlider?: boolean | null;
   loopForSlider?: boolean | null;
   layout?: string[] | string | null;
@@ -83,6 +97,8 @@ export type ListingBlockData = {
   headingTag?: string;
   cssClass?: string;
   backgroundColor?: string;
+   backgroundImage?: string;
+  backgroundImageAlt?: string;
 
   // layout + mode
   isSlider: boolean;
@@ -164,6 +180,8 @@ export function mapListingBlock(cmsBlock: WPListingBlockCMS): ListingBlockData {
     headingTag : cmsBlock.headingTag ?? "",
     cssClass: cmsBlock.cssClass ?? "",
     backgroundColor: cmsBlock.backgroundColor ?? 'transparent',
+    backgroundImage:cmsBlock?.backgroundImage?.node?.sourceUrl ?? "" ,
+    backgroundImageAlt: cmsBlock?.backgroundImage?.node?.altText ?? "",
 
     isSlider: Boolean(cmsBlock.isSlider),
     loopForSlider: Boolean(cmsBlock.loopForSlider),

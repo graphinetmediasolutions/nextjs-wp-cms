@@ -50,7 +50,7 @@ export default function ListingGridLayout2({ block }: { block: ListingBlockData 
               >
                 <Image
                   src={item.image}
-                  alt={item.title ?? "Blog image"}
+                  alt={item?.alt ?? ""}
                   fill
                   className="object-cover rounded-lg"
                 />

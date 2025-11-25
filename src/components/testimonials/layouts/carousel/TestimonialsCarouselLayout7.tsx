@@ -147,7 +147,7 @@ export default function TestimonialsCarouselLayout7({ block }: { block: Testimon
 
           <BaseCarousel<TestimonialItem>
             items={items}
-            className="testimonial-layout-carousel-one"
+            className="testimonial-layout-carousel-seven"
             itemBasis={itemBasisResponsive({ base: 1, sm: 2, md: 2, lg: displayPerRow })}
             // itemBasis="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/3"
             slidesToScroll={slidesToScroll}

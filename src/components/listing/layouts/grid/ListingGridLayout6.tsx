@@ -51,7 +51,7 @@ export default function ListingGridLayout6({ block }: { block: ListingBlockData 
 
                 <Image
                   src={item.image}
-                  alt={item.title ?? "Blog image"}
+                  alt={item?.alt ?? ""}
                   fill
                   className="object-cover"
                 />
