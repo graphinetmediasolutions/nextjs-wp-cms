@@ -18,10 +18,10 @@ const TestimonialsGridLayout8 = ({ block }: { block: TestimonialBlockData }) => 
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { items, displayPerRow } = block;
+  const { items, displayPerRow, showPost } = block;
   const gridCols = perViewToGridCols(displayPerRow);
 
-  console.log(items)
+  const limit = Number(showPost);
 
   const handleOpenVideo = (url?: string | null) => {
 
@@ -74,10 +74,10 @@ const TestimonialsGridLayout8 = ({ block }: { block: TestimonialBlockData }) => 
         <div className={`grid gap-6 ${gridCols}`}>
           {Array.isArray(items) &&
             items.length > 0 &&
-            items.map((item, index) => (
+           items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
 
 
-              <div className="mb-5" key={item?.name?.replace(/\s+/g, "") ?? index}>
+              <div className="mb-5" key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`}>
                 <div className="flex flex-col md:flex-row items-start gap-4">
 
                   <div className="h-60 w-60 shrink-0 relative">

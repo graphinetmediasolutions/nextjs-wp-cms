@@ -23,6 +23,7 @@ export default function Section({
   backgroundImageUrl,
   backgroundImageAlt,
   padY = "py-16",
+  
   overlay,
   children,
 }: SectionProps) {
@@ -38,11 +39,12 @@ export default function Section({
           fill
           src={backgroundImageUrl}
           alt={backgroundImageAlt || ""}
+          className="object-cover object-top w-full h-full"
         />
       }
 
-      {/* {overlay ? <div className={`absolute inset-0 pointer-events-none ${overlay}`} /> : null} */}
-      <div className={`${container} relative z-10 ${padY}`}>
+      {overlay ? <div className={`absolute inset-0 pointer-events-none ${overlay}`} /> : null}
+      <div className={`${container ? container : "container"} relative z-10 ${padY}`}>
         {children}
       </div>
     </section>

@@ -9,7 +9,7 @@ const GRID = {
     "Layout 3": dynamic(() => import("./layouts/grid/TeamsGridLayout3"), { ssr: true }),
     "Layout 4": dynamic(() => import("./layouts/grid/TeamsGridLayout4"), { ssr: true }),
     "Layout 5": dynamic(() => import("./layouts/grid/TeamsGridLayout5"), { ssr: true }),
-//     "Layout 6": dynamic(() => import("./layouts/grid/TeamsGridLayout6"), { ssr: true }),
+    "Layout 6": dynamic(() => import("./layouts/grid/TeamsGridLayout6"), { ssr: true }),
 } as const;
 
 const SLIDER = {
@@ -18,7 +18,7 @@ const SLIDER = {
     "Layout 3": dynamic(() => import("./layouts/carousel/TeamsCarouselLayout3"), { ssr: true }),
     "Layout 4": dynamic(() => import("./layouts/carousel/TeamsCarouselLayout4"), { ssr: true }),
     "Layout 5": dynamic(() => import("./layouts/carousel/TeamsCarouselLayout5"), { ssr: true }),
-    // "Layout 6": dynamic(() => import("./layouts/carousel/TeamsCarouselLayout6"), { ssr: true }),
+    "Layout 6": dynamic(() => import("./layouts/carousel/TeamsCarouselLayout6"), { ssr: true }),
 } as const;
 
 type GridKeys = keyof typeof GRID;

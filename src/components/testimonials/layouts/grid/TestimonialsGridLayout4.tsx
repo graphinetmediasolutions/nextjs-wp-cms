@@ -18,8 +18,10 @@ const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => 
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { items, displayPerRow } = block;
+  const { items, displayPerRow, showPost } = block;
   const gridCols = perViewToGridCols(displayPerRow);
+
+  const limit = Number(showPost);
 
   console.log(items)
 
@@ -71,12 +73,12 @@ const TestimonialsGridLayout4 = ({ block }: { block: TestimonialBlockData }) => 
       <div className={`grid gap-6 ${gridCols}`}>
         {Array.isArray(items) &&
           items.length > 0 &&
-          items.map((item, index) => (
+         items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
 
 
 
 
-            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="flex flex-col  mx-4 my-6 shadow-lg">
+            <div key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`} className="flex flex-col  mx-4 my-6 shadow-lg">
               <div className="px-4 py-12 rounded-t-lg sm:px-8 md:px-12 dark:bg-gray-50">
                 <p className="relative px-6 py-1 text-lg italic text-center dark:text-gray-800">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" className="w-8 h-8 dark:text-violet-600">

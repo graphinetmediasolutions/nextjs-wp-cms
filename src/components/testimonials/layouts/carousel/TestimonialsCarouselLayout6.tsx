@@ -40,6 +40,7 @@ export default function TestimonialsCarouselLayout6({ block }: { block: Testimon
     sliderSpeed = 4000,
     loopForSlider,
     showArrow,
+    showPost,
     showBullets,
   } = block;
 
@@ -84,6 +85,21 @@ export default function TestimonialsCarouselLayout6({ block }: { block: Testimon
     // optional: if you want fresh reload each time:
     // setActiveVideoUrl(null);
   };
+
+   const rawLimit = showPost ?? -1;
+
+  const limit =
+    typeof rawLimit === "number"
+      ? rawLimit
+      : parseInt(rawLimit as string, 10);
+
+  // Final list of items to show
+  const visibleItems =
+    !Array.isArray(items)
+      ? []
+      : limit === -1
+        ? items
+        : items.slice(0, limit);
 
 
 
@@ -138,7 +154,7 @@ export default function TestimonialsCarouselLayout6({ block }: { block: Testimon
       </div>
 
       <BaseCarousel<TestimonialItem>
-        items={items}
+        items={visibleItems}
         className="testimonial-layout-carousel-six"
         itemBasis={itemBasisResponsive({ base: 1, sm: 2, md: 2, lg: displayPerRow })}
         // itemBasis="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/3"

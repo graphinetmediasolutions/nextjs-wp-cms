@@ -4,9 +4,10 @@ import DOMPurify from "isomorphic-dompurify";
 type SafeRichTextProps = {
   html: string;
   className?: string;
+  style?: React.CSSProperties;
 };
 
-export default function SafeRichText({ html, className = "" }: SafeRichTextProps) {
+export default function SafeRichText({ html, className = "", style={} }: SafeRichTextProps) {
   if (!html) return null;
 
   // ✅ allow common content tags + class + style
@@ -20,5 +21,5 @@ export default function SafeRichText({ html, className = "" }: SafeRichTextProps
     ],
   });
 
-  return <div className={className} dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
+  return <div  style={style}  className={className} dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
 }

@@ -8,7 +8,8 @@ type SafeHeadingProps = {
   html?: string | null;                 // tolerate null/undefined from CMS
   as?: HeadingTag;                      // 'h1' | ... | 'span'
   className?: string;                   // external Tailwind classes
-  position?: HeadingPosition;           // Left | Right | Center
+  position?: HeadingPosition;      
+  style?: React.CSSProperties;     // Left | Right | Center
 };
 
 // Runtime guard (safety if CMS sends weird tag values)
@@ -20,6 +21,7 @@ const POS_CLASSES: Record<HeadingPosition, string> = {
   Left: "text-left",
   Center: "text-center",
   Right: "text-right",
+
 };
 
 export default function SafeHeading({
@@ -27,6 +29,7 @@ export default function SafeHeading({
   as = "h2",
   className = "",
   position = "Left",
+    style = {},
 }: SafeHeadingProps) {
   if (!html) return null;
 
@@ -47,6 +50,7 @@ export default function SafeHeading({
 
   return (
     <Tag
+     style={style}  
       className={`${align} ${className}`.trim()}
       dangerouslySetInnerHTML={{ __html: safeHtml }}
     />

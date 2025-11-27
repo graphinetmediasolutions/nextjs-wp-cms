@@ -319,6 +319,92 @@ export const NodeByUriQuery = gql`
             }
           }
         }
+
+
+
+
+
+        ... on PageBuilderPageLayoutCtaSectionLayout {
+          heading
+          subheading
+          layout
+          description
+          sectionWidth
+          backgroundColor
+          textColor
+          cssClass
+          backgroundImage{
+            node{
+              sourceUrl
+              altText
+            }
+          }
+          alignItem
+          image{
+            node{
+              sourceUrl
+              altText
+            }
+          }
+          imageAlign
+          ctaItems{
+            ctaOptions{
+              actionButtonLabel
+              actionButtonUrl
+              actionButtonClass
+            }
+          }
+        }
+
+
+
+
+
+        ... on PageBuilderPageLayoutFaqSectionLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          layout
+          showPost
+          displayPerRow
+          sectionWidth
+          cssClass
+          faqItems{
+            faqQuestion
+            faqAnswer
+          }
+        }
+
+
+
+
+
+
+
+        ... on PageBuilderPageLayoutFeatureListLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          layout
+          displayPerRow
+          textColor
+          backgroundColor
+          sectionWidth
+          cssClass
+          featureItesm{
+            imageOrIcon
+            imageIcon{
+              node{
+                sourceUrl
+              }
+            }
+            featureTitle
+            featureDescription
+            actionButtonUrl
+          }
+        }
           
 
 

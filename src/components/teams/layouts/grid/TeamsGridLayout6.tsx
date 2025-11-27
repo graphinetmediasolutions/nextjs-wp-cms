@@ -19,7 +19,7 @@ import { TeamsBlockData, type HeadingTag } from "@/lib/mappers/mapTeamsBlock";
 import ContentModal from "@/components/ContentModal";
 import ContentDialog from "@/components/ContentDialog";
 
-const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
+const TeamsGridLayout6 = ({ block }: { block: TeamsBlockData }) => {
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -75,13 +75,14 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
       )}
 
       {/* Grid of testimonials */}
-      <div className={`grid gap-6 ${gridCols}`}>
+      <div className={`grid gap-8 ${gridCols} `}>
         {Array.isArray(items) &&
           items.length > 0 &&
           items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
             <div key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`} className=" lg:flex lg:items-center">
-              <div className="border w-full h-full border-gray-300 rounded-md overflow-hidden">
-                <div className="w-full aspect-square bg-gray-50 relative">
+              <div className="w-full h-full flex flex-col">
+                <div className="w-40 h-40 bg-gray-50 border border-gray-300 rounded-full mx-auto overflow-hidden">
+                  {/* <img src="https://readymadeui.com/team-1.webp" className="w-full h-full" /> */}
                   {item?.photo && (
                     <Image
                       width={500}
@@ -91,11 +92,13 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
                       alt={item?.photoAlt || ""}
                     />
                   )}
+                </div>
+                <div className="bg-white p-4 rounded-lg relative   -mt-6 text-center  w-full flex-grow-1">
                   {item?.videoUrl && (
                     <button
                       type="button"
                       onClick={() => handleOpenVideo(item.videoUrl)}
-                      className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                      className="absolute top-2 right-2 flex items-center justify-center cursor-pointer"
                     >
                       <div className="bg-white/70 backdrop-blur rounded-full p-4">
                         <svg
@@ -110,13 +113,9 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
                     </button>
                   )}
 
-                </div>
-
-                <div className="p-4">
-
                   {
                     item?.name && <SafeHeading
-                      position="Left"
+                      position="Center"
                       className="text-slate-900 text-base font-semibold"
                       as="h3"
                       html={item?.name}
@@ -125,32 +124,29 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
                   }
                   {
                     item?.designation && <SafeHeading
-                      position="Left"
+                      position="Center"
                       className="text-slate-600 text-xs mt-1"
                       as="h4"
                       html={item?.designation}
                     />
                   }
 
-                  <div className="mt-4">
-
-                    {
-                      item?.shortBio && <SafeRichText
-                        className="text-slate-600 text-sm leading-relaxed"
-                        html={item?.shortBio}
+                  {
+                    item?.shortBio && <SafeRichText
+                      className="text-slate-600 text-sm leading-relaxed"
+                      html={item?.shortBio}
 
 
-                      />
-                    }
-                    {
-                      item?.detailBio && <ContentDialog
-                        content={item?.detailBio}
-                        buttonLabel="Read more"
-                        title="More Details"
-                        className="mt-4 cursor-pointer"
-                      />
-                    }
-                  </div>
+                    />
+                  }
+                  {
+                    item?.detailBio && <ContentDialog
+                      content={item?.detailBio}
+                      buttonLabel="Read more"
+                      title="More Details"
+                      className="mt-4 cursor-pointer"
+                    />
+                  }
                   {
                     item?.socialLinks &&
                     <div className="space-x-4 mt-4">
@@ -209,6 +205,7 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
                     </div>
                   }
                 </div>
+
               </div>
             </div>
           ))}
@@ -230,4 +227,4 @@ const TeamsGridLayout2 = ({ block }: { block: TeamsBlockData }) => {
   );
 };
 
-export default TeamsGridLayout2;
+export default TeamsGridLayout6;

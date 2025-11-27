@@ -182,7 +182,7 @@ export default function TeamsCarouselLayout2({ block }: { block: TeamsBlockData 
         }}
         exposeNav={setNav}
         renderItem={(item, index) => (
-          <div className="border w-full border-gray-300 rounded-md overflow-hidden">
+          <div className="border w-full h-full border-gray-300 rounded-md overflow-hidden">
             <div className="w-full aspect-square bg-gray-50 relative">
               {item?.photo && (
                 <Image

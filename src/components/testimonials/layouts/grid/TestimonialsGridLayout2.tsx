@@ -18,10 +18,10 @@ const TestimonialsGridLayout2 = ({ block }: { block: TestimonialBlockData }) => 
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { items, displayPerRow } = block;
+  const { items, displayPerRow, showPost } = block;
   const gridCols = perViewToGridCols(displayPerRow);
+  const limit = Number(showPost);
 
-  console.log(items)
 
   const handleOpenVideo = (url?: string | null) => {
 
@@ -70,11 +70,11 @@ const TestimonialsGridLayout2 = ({ block }: { block: TestimonialBlockData }) => 
       <div className={`grid gap-6 ${gridCols}`}>
         {Array.isArray(items) &&
           items.length > 0 &&
-          items.map((item, index) => (
+          items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
 
 
 
-            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="p-8 border rounded-lg dark:border-gray-700">
+            <div key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`} className="p-8 border rounded-lg dark:border-gray-700">
               <SafeRichText
                 html={item?.quote}
                 className="leading-loose text-gray-500 dark:text-gray-400"
@@ -135,7 +135,7 @@ const TestimonialsGridLayout2 = ({ block }: { block: TestimonialBlockData }) => 
 
           ))}
       </div>
-       {block?.actionButtonText && block?.actionButtonUrl && (
+      {block?.actionButtonText && block?.actionButtonUrl && (
         <div className="mt-8 text-center">
           <Link
             href={block?.actionButtonUrl ?? "#"}

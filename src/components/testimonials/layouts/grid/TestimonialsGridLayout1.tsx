@@ -20,8 +20,9 @@ const TestimonialsGridLayout1 = ({ block }: { block: TestimonialBlockData }) => 
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { items, displayPerRow } = block;
+  const { items, displayPerRow, showPost } = block;
   const gridCols = perViewToGridCols(displayPerRow);
+   const limit = Number(showPost);
 
   const handleOpenVideo = (url?: string | null) => {
 
@@ -69,8 +70,8 @@ const TestimonialsGridLayout1 = ({ block }: { block: TestimonialBlockData }) => 
       <div className={`grid gap-6 ${gridCols}`}>
         {Array.isArray(items) &&
           items.length > 0 &&
-          items.map((item, index) => (
-            <div key={item?.name?.replace(/\s+/g, "") ?? index} className="lg:-mx-6 lg:flex lg:items-center">
+          items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
+            <div key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`} className="lg:-mx-6 lg:flex lg:items-center">
               {/* LEFT: image + play button overlay */}
               <div className="relative lg:w-1/2 lg:mx-6 w-full h-96 lg:h-[36rem]">
                 {item?.image && (

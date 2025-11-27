@@ -1,4 +1,7 @@
 import BlogBlock from "./sections/BlogBlock";
+import CTABlock from "./sections/CTABlock";
+import FaqBlock from "./sections/FaqBlock";
+import FeaturesBlock from "./sections/FeaturesBlock";
 import Hero from "./sections/Hero";
 import ListingBlock from "./sections/ListingBlock";
 import TeamsBlock from "./sections/TeamsBlock";
@@ -11,7 +14,10 @@ export const registry: Record<string, React.ComponentType<any>> = {
   PageBuilderPageLayoutBlogBlockLayout :BlogBlock,
   PageBuilderPageLayoutListingBlockLayout: ListingBlock,
    PageBuilderPageLayoutTestimonialBlockLayout : TestimonialsBlock,
-  PageBuilderPageLayoutTeamBlockLayout :  TeamsBlock
+  PageBuilderPageLayoutTeamBlockLayout :  TeamsBlock,
+  PageBuilderPageLayoutCtaSectionLayout : CTABlock,
+  PageBuilderPageLayoutFaqSectionLayout : FaqBlock,
+  PageBuilderPageLayoutFeatureListLayout : FeaturesBlock,
   // ...one entry per section
 };
 

@@ -18,10 +18,11 @@ const TestimonialsGridLayout5 = ({ block }: { block: TestimonialBlockData }) => 
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { items, displayPerRow } = block;
+  const { items, displayPerRow, showPost } = block;
   const gridCols = perViewToGridCols(displayPerRow);
 
-  console.log(items)
+  const limit = Number(showPost);
+
 
   const handleOpenVideo = (url?: string | null) => {
 
@@ -71,12 +72,12 @@ const TestimonialsGridLayout5 = ({ block }: { block: TestimonialBlockData }) => 
       <div className={`grid gap-6 ${gridCols}`}>
         {Array.isArray(items) &&
           items.length > 0 &&
-          items.map((item, index) => (
+          items?.slice(0, limit === -1 ? items.length : limit)?.map((item, index) => (
 
 
 
 
-            <div key={item?.name?.replace(/\s+/g, "") ?? index} className=" bg-black text-white rounded-2xl">
+            <div key={`${item?.name?.replace(/\s+/g, "") || "item"}-${index}`} className=" bg-black text-white rounded-2xl">
 
               <div className="relative -mt-px overflow-hidden rounded-2xl">
 

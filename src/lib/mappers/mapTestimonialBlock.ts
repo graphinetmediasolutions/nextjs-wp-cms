@@ -3,11 +3,11 @@ export type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 type WPTestimonialImageNode = {
   sourceUrl?: string | null;
- altText?: string | null;
+  altText?: string | null;
 };
 type WPTestimonialImage = {
   node?: WPTestimonialImageNode | null;
-  
+
 };
 
 type WPBackgroundImageNode = {
@@ -78,7 +78,7 @@ export type TestimonialBlockData = {
 
   subheading?: string;
   subheadingPosition?: string[];
-
+  showPost?: number | string | null;
   description?: string;
 
   cssClass?: string;
@@ -101,7 +101,7 @@ export type TestimonialBlockData = {
 
   sectionWidth?: string | string[] | null;
   actionButtonText?: string;
-  actionButtonUrl?:string;
+  actionButtonUrl?: string;
 
   items: TestimonialItem[];
 };
@@ -113,8 +113,8 @@ function toNumber(n: unknown, fallback: number): number {
     typeof n === "string"
       ? Number(n)
       : typeof n === "number"
-      ? n
-      : NaN;
+        ? n
+        : NaN;
 
   return Number.isFinite(num) ? num : fallback;
 }
@@ -133,7 +133,7 @@ export function mapTestimonialBlock(
       quote: t.testimonialQuote ?? "",
       image: t.testimonialImage?.node?.sourceUrl ?? undefined,
       videoUrl: t.testimonialVideoUrl ?? undefined,
-     imageAlt:t.testimonialImage?.node?.altText ?? ""
+      imageAlt: t.testimonialImage?.node?.altText ?? ""
     }))
     // keep only items that at least have a name or quote
     .filter((item) => item.name || item.quote);
@@ -152,7 +152,7 @@ export function mapTestimonialBlock(
     heading: cmsBlock.heading ?? "",
     headingTag: cmsBlock.headingTag ?? "",
     headingPosition: cmsBlock.headingPosition ?? [],
-
+    showPost: cmsBlock.showPost ?? null,
     subheading: cmsBlock.subheading ?? "",
     subheadingPosition: cmsBlock.subheadingPosition ?? [],
 
@@ -160,7 +160,7 @@ export function mapTestimonialBlock(
 
     cssClass: cmsBlock.cssClass ?? "",
     backgroundColor: cmsBlock.backgroundColor ?? "transparent",
-    backgroundImage:cmsBlock?.backgroundImage?.node?.sourceUrl ?? "" ,
+    backgroundImage: cmsBlock?.backgroundImage?.node?.sourceUrl ?? "",
     backgroundImageAlt: cmsBlock?.backgroundImage?.node?.altText ?? "",
     isSlider: Boolean(cmsBlock.isSlider),
     loopForSlider: Boolean(cmsBlock.loopForSlider),
@@ -178,7 +178,7 @@ export function mapTestimonialBlock(
 
     sectionWidth: cmsBlock.sectionWidth ?? "Box Width",
     actionButtonText: cmsBlock.actionButtonLabel ?? "",
-    actionButtonUrl : cmsBlock?.actionButtonUrl ?? "",
+    actionButtonUrl: cmsBlock?.actionButtonUrl ?? "",
 
     items,
   };
