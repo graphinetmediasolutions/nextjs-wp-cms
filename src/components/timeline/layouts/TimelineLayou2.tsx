@@ -41,7 +41,7 @@ const TimelineLayou2 = ({ block }: { block: TimelineBlockData }) => {
 
                         const { formatted } = formatDate(item?.date);
                         return (
-                            <div className="relative grid grid-cols-[80px_1fr] md:grid-cols-[160px_1fr] gap-8 mb-8 timeline-item">
+                            <div key={index} className="relative grid grid-cols-[80px_1fr] md:grid-cols-[160px_1fr] gap-8 mb-8 timeline-item">
                                 <div className="absolute left-[3%] top-8 bottom-0 w-[2px] bg-[#145386] last:hidden"></div>
                                 {
                                     item?.year && <div className="year">
