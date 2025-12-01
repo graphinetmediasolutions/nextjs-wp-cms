@@ -7,6 +7,7 @@ import ListingBlock from "./sections/ListingBlock";
 import TeamsBlock from "./sections/TeamsBlock";
 import TestimonialsBlock from "./sections/TestimonialsBlock";
 import TextBlock from "./sections/TextBlock";
+import TimelineBlock from "./sections/TimelineBlock";
 
 export const registry: Record<string, React.ComponentType<any>> = {
   PageBuilderPageLayoutHeroSectionLayout: Hero,
@@ -18,6 +19,7 @@ export const registry: Record<string, React.ComponentType<any>> = {
   PageBuilderPageLayoutCtaSectionLayout : CTABlock,
   PageBuilderPageLayoutFaqSectionLayout : FaqBlock,
   PageBuilderPageLayoutFeatureListLayout : FeaturesBlock,
+  PageBuilderPageLayoutTimelineBlockLayout :TimelineBlock
   // ...one entry per section
 };
 

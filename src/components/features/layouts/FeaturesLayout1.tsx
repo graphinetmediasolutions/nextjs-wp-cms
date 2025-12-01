@@ -16,7 +16,7 @@ const bgColor = block?.backgroundColor || "#fff";
 
     const gridCols = perViewToGridCols(displayPerRow);
 
-    console.log('featureItesm', featureItesm);
+
 
     return (
         <>

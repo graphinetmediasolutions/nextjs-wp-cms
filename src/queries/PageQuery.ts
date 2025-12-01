@@ -405,6 +405,33 @@ export const NodeByUriQuery = gql`
             actionButtonUrl
           }
         }
+
+
+
+
+         ... on PageBuilderPageLayoutTimelineBlockLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          sectionWidth
+          cssClass
+          layout
+         timelineItems
+          {
+            imageOrIcon
+            imageIcon{
+              node{
+                sourceUrl
+                altText
+              }
+            }
+            title
+            description
+            date
+            year
+          }
+        }
           
 
 
