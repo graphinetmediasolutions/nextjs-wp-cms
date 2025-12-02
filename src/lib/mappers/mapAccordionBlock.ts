@@ -3,13 +3,13 @@
 export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 
-type WPFaqItem = {
-     faqQuestion?: string | null;
-    faqAnswer?: string | null;
+type WPAccordionItem = {
+    title?: string | null;
+    content?: string | null;
 }
 
 
-export type WPFaqBlockCMS = {
+export type WPAccordionBlockCMS = {
     heading?: string | null;
     subheading?: string | null;
     headingTag?: string;
@@ -17,17 +17,16 @@ export type WPFaqBlockCMS = {
     layout?: string[] | string | null;
     sectionWidth?: string | string[] | null;
     cssClass?: string | null;
-    faqItems?: WPFaqItem[] | null;
+    accordionItems?: WPAccordionItem[] | null;
     displayPerRow?: string | null;
-    showPost?: number | undefined;
-
+     showPost?: number | undefined;
 }
 
 
 
 
 
-export type FaqBlockData = {
+export type AccordionBlockData = {
     heading?: string | null;
     subheading?: string | null;
     headingTag?: string;
@@ -35,9 +34,9 @@ export type FaqBlockData = {
     layout?: string[] | string | null;
     sectionWidth?: string | string[] | null;
     cssClass?: string | null;
-    faqItems?: WPFaqItem[] | null;
-    showPost?: number | undefined;
+    items?: WPAccordionItem[] | null;
     displayPerRow?: number | null;
+     showPost?: number | undefined;
 }
 
 // ---- Helpers ----
@@ -53,7 +52,7 @@ function toNumber(n: unknown, fallback: number): number {
     return Number.isFinite(num) ? num : fallback;
 }
 
-export function mapFaqBlock(cmsBlock: WPFaqBlockCMS): FaqBlockData {
+export function mapAccordionBlock(cmsBlock: WPAccordionBlockCMS): AccordionBlockData {
 
 
     // 2) Normalize layout: support string or string[]
@@ -63,7 +62,7 @@ export function mapFaqBlock(cmsBlock: WPFaqBlockCMS): FaqBlockData {
 
 
     // 4) Build final block
-    const block: FaqBlockData = {
+    const block: AccordionBlockData = {
         heading: cmsBlock?.heading ?? "",
         headingTag: cmsBlock?.headingTag ?? "h2",
         headingPosition: cmsBlock?.headingPosition ?? [],
@@ -72,9 +71,8 @@ export function mapFaqBlock(cmsBlock: WPFaqBlockCMS): FaqBlockData {
         layout,
         displayPerRow: toNumber(cmsBlock.displayPerRow, 1),
         sectionWidth: cmsBlock?.sectionWidth ?? "Box Width",
-        faqItems: cmsBlock?.faqItems ?? [],
+        items: cmsBlock?.accordionItems ?? [],
         showPost: cmsBlock?.showPost ?? -1,
-
     };
 
     return block

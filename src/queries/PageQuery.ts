@@ -432,6 +432,42 @@ export const NodeByUriQuery = gql`
             year
           }
         }
+
+
+
+
+        ... on PageBuilderPageLayoutTabSectionLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          sectionWidth
+          cssClass
+          layout
+          tabsPosition
+          tabItems{
+            title
+            content
+          }
+        }
+
+
+
+        ... on PageBuilderPageLayoutAccordionSectionLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          layout
+          showPost
+          sectionWidth
+          cssClass
+          displayPerRow
+          accordionItems{
+            title
+            content
+          }
+        }
           
 
 

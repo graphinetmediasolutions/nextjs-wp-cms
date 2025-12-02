@@ -3,13 +3,15 @@
 export type HeadingTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 
-type WPFaqItem = {
-     faqQuestion?: string | null;
-    faqAnswer?: string | null;
+export type TabsPosition = "Top" | "Left" | "Right";
+
+type WPTabItem = {
+    title?: string | null;
+    content?: string | null;
 }
 
 
-export type WPFaqBlockCMS = {
+export type WPTabsBlockCMS = {
     heading?: string | null;
     subheading?: string | null;
     headingTag?: string;
@@ -17,27 +19,24 @@ export type WPFaqBlockCMS = {
     layout?: string[] | string | null;
     sectionWidth?: string | string[] | null;
     cssClass?: string | null;
-    faqItems?: WPFaqItem[] | null;
-    displayPerRow?: string | null;
-    showPost?: number | undefined;
-
+  tabsPosition: TabsPosition[] | null;
+    tabItems?: WPTabItem[] | null;
 }
 
 
 
 
 
-export type FaqBlockData = {
+export type TabsBlockData = {
     heading?: string | null;
     subheading?: string | null;
     headingTag?: string;
     headingPosition?: string[];
-    layout?: string[] | string | null;
-    sectionWidth?: string | string[] | null;
-    cssClass?: string | null;
-    faqItems?: WPFaqItem[] | null;
-    showPost?: number | undefined;
-    displayPerRow?: number | null;
+    layout: string[] | string | null;
+    sectionWidth: string | string[] | null;
+    cssClass: string | null;
+    position: TabsPosition[] | null;
+    items: WPTabItem[] | null;
 }
 
 // ---- Helpers ----
@@ -53,7 +52,7 @@ function toNumber(n: unknown, fallback: number): number {
     return Number.isFinite(num) ? num : fallback;
 }
 
-export function mapFaqBlock(cmsBlock: WPFaqBlockCMS): FaqBlockData {
+export function mapTabsBlock(cmsBlock: WPTabsBlockCMS): TabsBlockData {
 
 
     // 2) Normalize layout: support string or string[]
@@ -63,17 +62,16 @@ export function mapFaqBlock(cmsBlock: WPFaqBlockCMS): FaqBlockData {
 
 
     // 4) Build final block
-    const block: FaqBlockData = {
+    const block: TabsBlockData = {
         heading: cmsBlock?.heading ?? "",
         headingTag: cmsBlock?.headingTag ?? "h2",
         headingPosition: cmsBlock?.headingPosition ?? [],
         subheading: cmsBlock?.subheading ?? "",
         cssClass: cmsBlock?.cssClass ?? "",
         layout,
-        displayPerRow: toNumber(cmsBlock.displayPerRow, 1),
         sectionWidth: cmsBlock?.sectionWidth ?? "Box Width",
-        faqItems: cmsBlock?.faqItems ?? [],
-        showPost: cmsBlock?.showPost ?? -1,
+        position : cmsBlock?.tabsPosition ?? [],
+        items: cmsBlock?.tabItems ?? []
 
     };
 

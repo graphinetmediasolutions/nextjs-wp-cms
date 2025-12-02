@@ -63,7 +63,7 @@ export default async function Page({
     { uri }
   );
 
-  console.log(nodeByUri);
+  // console.log(nodeByUri);
 
   if (!nodeByUri || nodeByUri.__typename !== "Page") return notFound();
   return (
