@@ -468,6 +468,61 @@ export const NodeByUriQuery = gql`
             content
           }
         }
+
+
+
+        ... on PageBuilderPageLayoutVideoEmbedLayout {
+          heading
+          headingTag
+          headingPosition
+          sectionWidth
+          cssClass
+          videoTitle
+          videoUrl
+          videoPosterImage{
+            node{
+              sourceUrl
+            }
+          }
+        }
+
+
+
+
+        ... on PageBuilderPageLayoutMediaGalleryLayout {
+          heading
+          headingTag
+          headingPosition
+          layout
+          autoplay
+          showArrow
+          showBullets
+          sliderPerScroll
+          sliderSpeed
+          loopForSlider
+          sectionWidth
+          cssClass
+          galleryItems{
+            imageOrVideo
+            image{
+              node{
+                sourceUrl
+                altText
+                 mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
+            videoUrl
+            videoPosterImage{
+              node{
+                sourceUrl
+              }
+            }
+            caption
+          }
+        }
           
 
 

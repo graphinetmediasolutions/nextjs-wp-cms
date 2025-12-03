@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { print } from "graphql";
 import { fetchGraphQL } from "@/utils/fetchGraphQL";
-// import { NodeByUriQuery } from "@/components/Templates/Page/PageQuery";
-// import PageTemplate from "@/components/Templates/Page/PageTemplate";
 import { NodeByUriQuery } from "@/queries/PageQuery";
 import PageTemplate from "@/components/Templates/Page/PageTemplate";
 import RevalidateButton from "@/components/RevalidateButton";

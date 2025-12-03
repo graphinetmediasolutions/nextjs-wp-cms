@@ -15,7 +15,6 @@ const FeaturesLayout3 = ({ block }: { block: FeaturesBlockData }) => {
 
     const gridCols = perViewToGridCols(displayPerRow);
 
-    console.log('featureItesm', featureItesm);
 
     return (
         <>
