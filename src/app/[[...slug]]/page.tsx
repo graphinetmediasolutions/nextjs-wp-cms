@@ -73,7 +73,7 @@ export default async function Page({
 
 
 
-      <RevalidateButton />
+      {/* <RevalidateButton /> */}
     </>
   );
 }
