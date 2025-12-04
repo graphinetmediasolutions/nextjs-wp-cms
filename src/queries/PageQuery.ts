@@ -523,6 +523,49 @@ export const NodeByUriQuery = gql`
             caption
           }
         }
+
+
+
+        ... on PageBuilderPageLayoutPriceTableLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          layout
+          displayPerRow
+          sectionWidth
+          cssClass
+          priceItems{
+            title
+            planFeature{
+              features
+            }
+            planPrice
+            discountedPrice
+            planPeriod
+            planCtaText
+            planCtaUrl
+          }
+        }
+
+
+
+
+
+
+
+        ... on PageBuilderPageLayoutQuoteBlockLayout {
+          heading
+          headingTag
+          headingPosition
+          subheading
+          layout
+          sectionWidth
+          cssClass
+          quoteText
+          quoteAuthorName
+          quoteAuthorRole
+        }
           
 
 

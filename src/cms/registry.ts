@@ -6,6 +6,8 @@ import FeaturesBlock from "./sections/FeaturesBlock";
 import GalleryBlock from "./sections/GalleryBlock";
 import Hero from "./sections/Hero";
 import ListingBlock from "./sections/ListingBlock";
+import PricingBlock from "./sections/PricingBlock";
+import QuoteBlock from "./sections/QuoteBlock";
 import TabsBlock from "./sections/TabsBlock";
 import TeamsBlock from "./sections/TeamsBlock";
 import TestimonialsBlock from "./sections/TestimonialsBlock";
@@ -27,7 +29,9 @@ export const registry: Record<string, React.ComponentType<any>> = {
   PageBuilderPageLayoutTabSectionLayout : TabsBlock,
   PageBuilderPageLayoutAccordionSectionLayout : AccordionBlock,
   PageBuilderPageLayoutVideoEmbedLayout : VideoBlock,
-  PageBuilderPageLayoutMediaGalleryLayout : GalleryBlock
+  PageBuilderPageLayoutMediaGalleryLayout : GalleryBlock,
+  PageBuilderPageLayoutPriceTableLayout : PricingBlock,
+  PageBuilderPageLayoutQuoteBlockLayout : QuoteBlock
   // ...one entry per section
 };
 
