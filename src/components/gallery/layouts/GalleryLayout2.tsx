@@ -6,6 +6,7 @@ import "yet-another-react-lightbox/styles.css";
 import Video from "yet-another-react-lightbox/plugins/video";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/plugins/captions.css";
+import Image from "next/image";
 
 // adjust path
 // import { itemBasisResponsive } from "@/lib/itemBasisResponsive"; // if you use that helper
@@ -179,7 +180,9 @@ const GalleryCarouselLayout = ({ block }: { block: MediaGalleryBlockData }) => {
                             onClick={() => setIndex(idx)}
                             className="relative block w-full overflow-hidden rounded-lg"
                         >
-                            <img
+                            <Image
+                            width={500}
+                            height={500}
                                 src={item.src}
                                 alt={item.alt || ""}
                                 className="w-full h-64 object-cover"

@@ -5,11 +5,11 @@ import React from 'react'
 
 const GalleryBlock = ({ data }: { data: WPMediaGalleryBlockCMS }) => {
 
-    console.log("data", data)
+
 
     const block = mapMediaGalleryBlock(data);
 
-    console.log("gallery Block", block)
+
 
 
     return (

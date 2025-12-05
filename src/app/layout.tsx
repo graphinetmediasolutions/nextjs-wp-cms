@@ -8,6 +8,7 @@ import HeaderServer from "@/components/layout/HeaderNew";
 import { getGlobal } from "@/lib/getGlobal";
 import { collectSocials } from "@/lib/socials";
 import Script from "next/script";
+import TrackingScripts from "@/components/TrackingScripts";
 
 
 const brygada = Brygada_1918({ subsets: ["latin"], weight: ["400", "500", "600", "700"], display: "swap", variable: "--font-brygada" });
@@ -52,6 +53,7 @@ export default async function RootLayout({
       <body
         className={`${brygada.variable} ${mulish.variable} ${outfit.variable} antialiased`}
       >
+        {/* <TrackingScripts trackingCode={trackingCode} /> */}
         {/* ✅ Global CSS from WordPress */}
         {ts?.globalCss && (
           <style

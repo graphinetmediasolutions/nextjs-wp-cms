@@ -1,30 +1,5 @@
 import { gql } from "graphql-tag";
 
-// export const PageQuery = gql`
-//   query PageById($id: ID!, $idType: PageIdType!) {
-//     page(id: $id, idType: $idType) {
-//       id
-//       uri
-//       content
-//       pageBulider {
-//         pageLayout {
-//           __typename
-//           ... on PageBuliderPageLayoutContentBlockLayout {
-//             fieldGroupName
-//             heading
-//             bannerImage { node { altText sourceUrl } }
-//           }
-//           ... on PageBuliderPageLayoutContentWithImageLayout {
-//             fieldGroupName
-//             heading
-//             content
-//             image { node { altText sourceUrl } }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
 
 
 

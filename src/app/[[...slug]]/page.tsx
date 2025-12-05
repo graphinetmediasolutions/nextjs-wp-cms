@@ -9,11 +9,17 @@ import { nextSlugToWpSlug } from "@/utils/nextSlugToWpSlug";
 import { SeoQuery } from "@/queries/general/SeoQuery";
 import { setSeoData } from "@/utils/seoData";
 import Hero from "@/components/layout/Hero";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 
 
 type Props = {
   params: { slug: string };
+};
+type PageProps = {
+  params: {
+    slug?: string[]; // Next gives array for [[...slug]]
+  };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -64,8 +70,11 @@ export default async function Page({
   // console.log(nodeByUri);
 
   if (!nodeByUri || nodeByUri.__typename !== "Page") return notFound();
+  const title = nodeByUri?.title || "";
   return (
     <>
+      {/* Breadcrumb Schema for every page */}
+      <BreadcrumbSchema title={title} slugSegments={parts} />
       <Hero data={nodeByUri} />
       <main>
         <PageTemplate page={nodeByUri} />
@@ -73,7 +82,7 @@ export default async function Page({
 
 
 
-      {/* <RevalidateButton /> */}
+      <RevalidateButton />
     </>
   );
 }

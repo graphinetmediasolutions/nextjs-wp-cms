@@ -7,9 +7,14 @@ export const setSeoData = ({ seo }: any) => {
     metadataBase: new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`),
     title: seo.title || "",
     description: seo.metaDesc || "",
+    
+    // robots: {
+    //   index: seo.metaRobotsNoindex === "index" ? true : false,
+    //   follow: seo.metaRobotsNofollow === "follow" ? true : false,
+    // },
     robots: {
-      index: seo.metaRobotsNoindex === "index" ? true : false,
-      follow: seo.metaRobotsNofollow === "follow" ? true : false,
+      index: false,
+      follow: false,
     },
     openGraph: {
       title: seo.opengraphTitle || "",
@@ -24,7 +29,7 @@ export const setSeoData = ({ seo }: any) => {
           alt: seo.opengraphImage?.altText || "",
         },
       ],
-      locale: "da_DK",
+      locale: "en_US",
       type: seo.opengraphType || "website",
     },
     twitter: {
