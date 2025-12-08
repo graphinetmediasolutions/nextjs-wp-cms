@@ -80,7 +80,7 @@ export function ProductDetailSchema({
       "@type": "Offer",
       url,
       price: page.productFields.price,
-      priceCurrency: page.productFields.currency, // "INR", "USD" etc.
+      priceCurrency: page.productFields.currency, // "
     
     };
   }
