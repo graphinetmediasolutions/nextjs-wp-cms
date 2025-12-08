@@ -99,7 +99,7 @@ export default async function Page({
   const title = nodeByUri?.title || "";
   return (
     <>
-      {/* Breadcrumb Schema for every page */}
+      {/* Breadcrumb Schema for every page dd */}
       <BreadcrumbSchema title={title} slugSegments={parts} />
       {isBlogDetailPage && <BlogDetailSchema page={nodeByUri} />}
        {isServiceDetailPage && <ServiceDetailSchema page={nodeByUri} />}
