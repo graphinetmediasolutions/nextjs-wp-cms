@@ -36,13 +36,15 @@
 import CmsRenderer from "@/cms/CmsRenderer";
 // import type { Page } from "@/gql/graphql";
 
-export default function PageTemplate({ page }: any) {
+export default function PageTemplate({ page, pageType }: any) {
+
+
 
   //  console.log("Page ",page?.pageBuilder?.pageLayout);
   const sections = page?.pageBuilder?.pageLayout ?? [];
   // console.log("Page in template",sections);
   if (sections.length > 0) {
-    return <CmsRenderer sections={sections as any[]} />;
+    return <CmsRenderer pageType={pageType} sections={sections as any[]} />;
   }
   
 }

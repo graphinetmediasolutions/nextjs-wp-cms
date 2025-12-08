@@ -9,8 +9,8 @@ type Block = {
   fieldGroupName?: string;
 } & Record<string, unknown>;
 
-export default function CmsRenderer({ sections = [] }: { sections?: Block[] }) {
-  // console.log("Sections in CmsRenderer", sections);
+export default function CmsRenderer({ sections = [], pageType }: { sections?: Block[], pageType:any }) {
+
   if (!sections.length) return null;
 
   return (
@@ -27,7 +27,7 @@ export default function CmsRenderer({ sections = [] }: { sections?: Block[] }) {
         }
         const { __typename, ...props } = b;
         const key = b.id ?? b.fieldGroupName ?? `${__typename}-${i}`;
-        return <Cmp key={key} data={props} />;
+        return <Cmp key={key} data={props} pageType={pageType} />;
       })}
     </>
   );

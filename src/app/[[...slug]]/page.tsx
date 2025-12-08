@@ -10,6 +10,10 @@ import { SeoQuery } from "@/queries/general/SeoQuery";
 import { setSeoData } from "@/utils/seoData";
 import Hero from "@/components/layout/Hero";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
+import { BlogDetailSchema } from "@/components/schema/BlogDetailSchema";
+import { ServiceDetailSchema } from "@/components/schema/ServiceDetailSchema";
+import { ProductDetailSchema } from "@/components/schema/ProductDetailSchema";
+
 
 
 
@@ -54,6 +58,18 @@ export function generateStaticParams(): { slug?: string[] }[] {
   return [{ slug: [] }];
 }
 
+type PageType = "blogs" | "services" | "products" | "generic";
+
+function getPageType(parts: string[]): PageType {
+  const first = parts[0];
+
+  if (first === "blogs") return "blogs";
+  if (first === "services") return "services";
+  if (first === "products") return "products";
+
+  return "generic";
+}
+
 export default async function Page({
   params,
 }: {
@@ -61,6 +77,16 @@ export default async function Page({
 }) {
   const parts = await params.slug ?? [];
   const uri = parts.length ? `/${parts.join("/")}/` : "/";
+
+  const pageType = getPageType(parts);
+
+  const isBlogDetailPage = pageType === "blogs" && parts.length >= 2;
+   const isServiceDetailPage = pageType === "services" && parts.length >= 2;
+   const isProductsDetailPage = pageType === "products" && parts.length >= 2;
+
+   
+
+
 
   const { nodeByUri } = await fetchGraphQL<{ nodeByUri: any }>(
     print(NodeByUriQuery),
@@ -75,9 +101,12 @@ export default async function Page({
     <>
       {/* Breadcrumb Schema for every page */}
       <BreadcrumbSchema title={title} slugSegments={parts} />
+      {isBlogDetailPage && <BlogDetailSchema page={nodeByUri} />}
+       {isServiceDetailPage && <ServiceDetailSchema page={nodeByUri} />}
+        {isProductsDetailPage && <ProductDetailSchema page={nodeByUri} />}
       <Hero data={nodeByUri} />
       <main>
-        <PageTemplate page={nodeByUri} />
+        <PageTemplate page={nodeByUri} pageType={pageType} />
       </main>
 
 

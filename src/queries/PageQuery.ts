@@ -35,6 +35,29 @@ export const NodeByUriQuery = gql`
         id
         uri
         title
+
+
+        date
+        modified
+        content
+        excerpt
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
+        author {
+          node {
+            id
+            name
+          }
+        }
+
+
+
+
+
         isFrontPage
         pageBuilder {
           pageLayout {
@@ -173,6 +196,8 @@ export const NodeByUriQuery = gql`
             edges {
               node {
                 id
+                __typename
+                slug
               }
             }
           }
@@ -188,7 +213,7 @@ export const NodeByUriQuery = gql`
               altText
              }
             }
-             excerpt
+            excerpt
             author {
               node {
                 id
